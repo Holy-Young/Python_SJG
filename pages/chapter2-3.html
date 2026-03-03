@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.3 数据类型与运算符</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/chapter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        /* 数据类型卡片 */
+        .datatype-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .datatype-card {
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        .datatype-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+        .dt-int { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-color: #93c5fd; }
+        .dt-float { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border-color: #a5b4fc; }
+        .dt-str { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-color: #f9a8d4; }
+        .dt-bool { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #86efac; }
+        
+        .datatype-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .dt-icon {
+            font-size: 32px;
+        }
+        .dt-name {
+            font-size: 18px;
+            font-weight: 900;
+            color: #1e293b;
+        }
+        .dt-desc {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+        .dt-examples {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        /* 类型转换流程 */
+        .conversion-flow {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 24px 0;
+        }
+        .conversion-demo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .conv-box {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            min-width: 150px;
+            text-align: center;
+        }
+        .conv-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .conv-value {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        .conv-arrow {
+            font-size: 28px;
+            color: #6366f1;
+            font-weight: 900;
+        }
+
+        /* 运算符表格 */
+        .operator-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .operator-table thead {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+        }
+        .operator-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .operator-table tbody tr {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+        .operator-table tbody tr:hover {
+            background: #f3f4f6;
+            transform: translateX(2px);
+        }
+        .operator-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+        }
+        .operator-table .op-col {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: #ef4444;
+            font-size: 18px;
+            width: 80px;
+        }
+        .operator-table .name-col {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .operator-table .example-col {
+            font-family: 'Courier New', monospace;
+            color: #3b82f6;
+            font-size: 13px;
+        }
+
+        /* 运算符优先级 */
+        .priority-levels {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            transition: all 0.2s ease;
+        }
+        .priority-item:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 4px 16px rgba(99,102,241,0.1);
+        }
+        .priority-num {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .priority-ops {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: #ef4444;
+            font-size: 16px;
+            min-width: 180px;
+        }
+        .priority-desc {
+            font-size: 14px;
+            color: #64748b;
+            flex: 1;
+        }
+
+        /* 计算器演示 */
+        .calculator-demo {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 24px 0;
+            color: white;
+        }
+        .calc-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-align: right;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .calc-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .calc-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .calc-btn.operator {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            border-color: transparent;
+        }
+        .calc-btn.equals {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: transparent;
+            grid-column: span 2;
+        }
+
+        /* 字符串操作演示 */
+        .string-ops-demo {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 28px;
+            margin: 24px 0;
+        }
+        .string-op-item {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .string-op-item:last-child {
+            margin-bottom: 0;
+        }
+        .string-op-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        .string-op-code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #3b82f6;
+            margin-bottom: 6px;
+        }
+        .string-op-result {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        /* 比较运算符真值表 */
+        .truth-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 20px 0;
+        }
+        .truth-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .truth-row:last-child {
+            border-bottom: none;
+        }
+        .truth-cell {
+            padding: 14px 16px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .truth-header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            color: white;
+            font-weight: 700;
+        }
+        .truth-row:not(.truth-header):nth-child(even) .truth-cell {
+            background: #f9fafb;
+        }
+        .truth-true {
+            color: #059669;
+            font-weight: 700;
+        }
+        .truth-false {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .datatype-cards {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .conversion-demo {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .conv-arrow {
+                transform: rotate(90deg);
+            }
+            .operator-table {
+                font-size: 12px;
+            }
+            .operator-table th,
+            .operator-table td {
+                padding: 10px 12px;
+            }
+            .priority-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .priority-ops {
+                min-width: auto;
+            }
+            .calc-buttons {
+                gap: 6px;
+            }
+            .calc-btn {
+                padding: 16px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top-nav">
+        <div class="nav-logo">
+            <button id="menuToggle" class="menu-toggle">☰</button>
+            <a href="../index.html">🐍 Python 入门课</a>
+        </div>
+        <div class="nav-info">专为初中生设计 · 从零开始学编程</div>
+    </header>
+    <div class="container">
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <!-- 面包屑导航 -->
+            <nav class="breadcrumb">
+                <a href="../index.html">🏠 首页</a>
+                <span class="bc-sep">/</span>
+                <a href="chapter2.html">第二章</a>
+                <span class="bc-sep">/</span>
+                <span class="bc-current">2.3 数据类型与运算符</span>
+            </nav>
+
+            <!-- 章节 Hero -->
+            <div class="chapter-hero animate-in">
+                <div class="chapter-hero-bg">
+                    <div class="ch-circle cc1"></div>
+                    <div class="ch-circle cc2"></div>
+                </div>
+
+                <div class="chapter-hero-content">
+                    <div class="chapter-hero-left">
+                        <div class="chapter-meta">
+                            <span class="badge badge-beginner">入门</span>
+                            <span class="chapter-num">第二章 · 第 3 节</span>
+                        </div>
+                        <h1>数据类型与运算符</h1>
+                        <p>了解 Python 的基本数据类型，掌握各种运算符的使用方法，学会进行类型转换</p>
+                    </div>
+                    <div class="chapter-hero-right">
+                        <div class="chapter-info-pill">🗺️ 含思维导图</div>
+                        <div class="chapter-info-pill">🎬 含视频讲解</div>
+                        <div class="chapter-info-pill">💻 含代码示例</div>
+                        <div class="chapter-info-pill">🧠 含互动测验</div>
+                    </div>
+                </div>
+
+                <div class="chapter-progress">
+                    <div class="progress-label-row">
+                        <span>📊 本章学习进度</span>
+                        <span class="progress-text"></span>
+                    </div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                </div>
+            </div>
+
+            <!-- 章节导图 -->
+            <section class="content-section animate-in" style="animation-delay:0.05s">
+                <div class="section-label">
+                    <div class="section-label-icon">🗺️</div>
+                    <span>本节知识结构</span>
+                </div>
+                <p class="content-p">在开始学习之前,先来看看这一节我们要学哪些内容:</p>
+                <div class="mindmap">
+                    <div class="mindmap-center">第三节<br>数据类型与运算符</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch branch-blue">
+                            <div class="branch-node">①基本数据类型</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">整数 int</div>
+                                <div class="branch-leaf">浮点数 float</div>
+                                <div class="branch-leaf">字符串 str</div>
+                                <div class="branch-leaf">布尔值 bool</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-indigo">
+                            <div class="branch-node">②数据类型转换</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">int() 转整数</div>
+                                <div class="branch-leaf">float() 转浮点数</div>
+                                <div class="branch-leaf">str() 转字符串</div>
+                                <div class="branch-leaf">bool() 转布尔值</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-violet">
+                            <div class="branch-node">③算术运算符</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">+ - * / 四则运算</div>
+                                <div class="branch-leaf">// % ** 特殊运算</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-green">
+                            <div class="branch-node">④比较与逻辑运算符</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">比较运算符</div>
+                                <div class="branch-leaf">逻辑运算符</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 视频讲解 -->
+            <section class="content-section animate-in" style="animation-delay:0.1s">
+                <div class="section-label">
+                    <div class="section-label-icon">🎬</div>
+                    <span>视频讲解</span>
+                </div>
+
+                <div class="video-wrapper">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1qW4y1a7fU&autoplay=0" allowfullscreen></iframe>
+                </div>
+                <div class="video-tip">
+                    💡 <strong>观看提示:</strong> 视频中详细演示了各种数据类型和运算符的使用，建议边看边跟着敲代码
+                </div>
+            </section>
+
+            <!-- 1. 基本数据类型 -->
+            <section class="content-section animate-in" style="animation-delay:0.15s">
+                <div class="section-label">
+                    <div class="section-label-icon">📦</div>
+                    <span>1. Python 的基本数据类型</span>
+                </div>
+
+                <p class="content-p">
+                    在 Python 中，每个数据都有自己的类型。就像生活中的物品分为不同类别一样，数字、文字、真假值在程序中也有不同的分类。Python 有四种最基础的数据类型。
+                </p>
+
+                <div class="datatype-cards">
+                    <div class="datatype-card dt-int">
+                        <div class="datatype-header">
+                            <div class="dt-icon">🔢</div>
+                            <div class="dt-name">整数 (int)</div>
+                        </div>
+                        <div class="dt-desc">
+                            整数就是没有小数部分的数字，可以是正数、负数或零。用于计数、排序等场景。
+                        </div>
+                        <div class="dt-examples">
+                            42, -17, 0, 999, -100
+                        </div>
+                    </div>
+
+                    <div class="datatype-card dt-float">
+                        <div class="datatype-header">
+                            <div class="dt-icon">📊</div>
+                            <div class="dt-name">浮点数 (float)</div>
+                        </div>
+                        <div class="dt-desc">
+                            浮点数就是带小数点的数字，用于表示更精确的数值，比如身高、体重、温度等。
+                        </div>
+                        <div class="dt-examples">
+                            3.14, -0.5, 2.0, 99.99
+                        </div>
+                    </div>
+
+                    <div class="datatype-card dt-str">
+                        <div class="datatype-header">
+                            <div class="dt-icon">📝</div>
+                            <div class="dt-name">字符串 (str)</div>
+                        </div>
+                        <div class="dt-desc">
+                            字符串就是文本，由一串字符组成。必须用引号（单引号或双引号）括起来。
+                        </div>
+                        <div class="dt-examples">
+                            "Hello", '你好', "123", 'Python'
+                        </div>
+                    </div>
+
+                    <div class="datatype-card dt-bool">
+                        <div class="datatype-header">
+                            <div class="dt-icon">✅</div>
+                            <div class="dt-name">布尔值 (bool)</div>
+                        </div>
+                        <div class="dt-desc">
+                            布尔值只有两个值：True（真）和 False（假），用于判断条件是否成立。
+                        </div>
+                        <div class="dt-examples">
+                            True, False
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">💡 查看数据类型</h3>
+                <p class="content-p">
+                    使用 <code>type()</code> 函数可以查看任何数据的类型：
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 查看不同数据的类型
+print(type(42))          # &lt;class 'int'&gt;
+print(type(3.14))        # &lt;class 'float'&gt;
+print(type("Hello"))     # &lt;class 'str'&gt;
+print(type(True))        # &lt;class 'bool'&gt;
+
+# 变量也可以查看类型
+age = 14
+name = "小明"
+print(type(age))         # &lt;class 'int'&gt;
+print(type(name))        # &lt;class 'str'&gt;</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>重要提示</strong>
+                        <p>字符串中的数字不是数字类型！比如 "123" 是字符串，不能直接参与数学运算。想要运算必须先转换类型。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 类型转换 -->
+            <section class="content-section animate-in" style="animation-delay:0.2s">
+                <div class="section-label">
+                    <div class="section-label-icon">🔄</div>
+                    <span>2. 数据类型转换</span>
+                </div>
+
+                <p class="content-p">
+                    有时候我们需要把一种数据类型转换成另一种。比如把字符串 "123" 转成整数 123，或者把整数 100 转成字符串 "100"。Python 提供了四个常用的转换函数。
+                </p>
+
+                <div class="conversion-flow">
+                    <h3 style="text-align:center; font-size:18px; font-weight:800; color:#1e293b; margin-bottom:20px;">
+                        🔄 类型转换示例
+                    </h3>
+                    
+                    <div class="conversion-demo">
+                        <div class="conv-box">
+                            <div class="conv-label">原始值</div>
+                            <div class="conv-value">"123"</div>
+                            <div class="conv-label" style="margin-top:4px; color:#ef4444;">str 类型</div>
+                        </div>
+                        <div class="conv-arrow">→</div>
+                        <div class="conv-box" style="border-color:#6366f1;">
+                            <div class="conv-label">int("123")</div>
+                            <div class="conv-value">123</div>
+                            <div class="conv-label" style="margin-top:4px; color:#059669;">int 类型</div>
+                        </div>
+                    </div>
+
+                    <div class="conversion-demo">
+                        <div class="conv-box">
+                            <div class="conv-label">原始值</div>
+                            <div class="conv-value">3.14</div>
+                            <div class="conv-label" style="margin-top:4px; color:#ef4444;">float 类型</div>
+                        </div>
+                        <div class="conv-arrow">→</div>
+                        <div class="conv-box" style="border-color:#6366f1;">
+                            <div class="conv-label">int(3.14)</div>
+                            <div class="conv-value">3</div>
+                            <div class="conv-label" style="margin-top:4px; color:#059669;">int 类型</div>
+                        </div>
+                    </div>
+
+                    <div class="conversion-demo">
+                        <div class="conv-box">
+                            <div class="conv-label">原始值</div>
+                            <div class="conv-value">100</div>
+                            <div class="conv-label" style="margin-top:4px; color:#ef4444;">int 类型</div>
+                        </div>
+                        <div class="conv-arrow">→</div>
+                        <div class="conv-box" style="border-color:#6366f1;">
+                            <div class="conv-label">str(100)</div>
+                            <div class="conv-value">"100"</div>
+                            <div class="conv-label" style="margin-top:4px; color:#059669;">str 类型</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">📝 四种转换函数</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 1. int() - 转换为整数
+num1 = int("123")      # "123" → 123
+num2 = int(3.14)       # 3.14 → 3 (小数部分会被舍去)
+num3 = int(3.99)       # 3.99 → 3 (不是四舍五入!)
+
+# 2. float() - 转换为浮点数
+num4 = float("3.14")   # "3.14" → 3.14
+num5 = float(100)      # 100 → 100.0
+num6 = float("99")     # "99" → 99.0
+
+# 3. str() - 转换为字符串
+text1 = str(123)       # 123 → "123"
+text2 = str(3.14)      # 3.14 → "3.14"
+text3 = str(True)      # True → "True"
+
+# 4. bool() - 转换为布尔值
+b1 = bool(1)           # 1 → True (非零数字都是 True)
+b2 = bool(0)           # 0 → False
+b3 = bool("hello")     # "hello" → True (非空字符串是 True)
+b4 = bool("")          # "" → False (空字符串是 False)</code></pre>
+                </div>
+
+                <div class="info-box" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #f59e0b;">
+                    <div class="info-box-icon">⚠️</div>
+                    <div class="info-box-text">
+                        <strong>常见错误</strong>
+                        <p>不能把不合法的字符串转成数字！比如 <code>int("hello")</code> 会报错，因为 "hello" 不是数字。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">🎯 实际应用场景</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 场景1: 用户输入的都是字符串，需要转换
+age_str = input("请输入你的年龄: ")  # 用户输入 "14"
+age = int(age_str)                   # 转换成整数 14
+print("你明年" + str(age + 1) + "岁") # 需要把整数转回字符串才能拼接
+
+# 场景2: 计算平均分
+score1 = "85"
+score2 = "92"
+score3 = "78"
+average = (int(score1) + int(score2) + int(score3)) / 3
+print(f"平均分: {average}")
+
+# 场景3: 价格计算
+price = "99.99"
+quantity = 3
+total = float(price) * quantity  # 先把字符串转成浮点数
+print(f"总价: {total}元")</code></pre>
+                </div>
+            </section>
+
+            <!-- 3. 算术运算符 -->
+            <section class="content-section animate-in" style="animation-delay:0.25s">
+                <div class="section-label">
+                    <div class="section-label-icon">➕</div>
+                    <span>3. 算术运算符</span>
+                </div>
+
+                <p class="content-p">
+                    算术运算符用于进行数学计算。Python 提供了丰富的运算符，除了基本的加减乘除，还有一些特殊的运算。
+                </p>
+
+                <table class="operator-table">
+                    <thead>
+                        <tr>
+                            <th>运算符</th>
+                            <th>名称</th>
+                            <th>示例</th>
+                            <th>结果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="op-col">+</td>
+                            <td class="name-col">加法</td>
+                            <td class="example-col">10 + 3</td>
+                            <td>13</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">-</td>
+                            <td class="name-col">减法</td>
+                            <td class="example-col">10 - 3</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">*</td>
+                            <td class="name-col">乘法</td>
+                            <td class="example-col">10 * 3</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">/</td>
+                            <td class="name-col">除法</td>
+                            <td class="example-col">10 / 3</td>
+                            <td>3.333...</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">//</td>
+                            <td class="name-col">整除（向下取整）</td>
+                            <td class="example-col">10 // 3</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">%</td>
+                            <td class="name-col">取余（取模）</td>
+                            <td class="example-col">10 % 3</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">**</td>
+                            <td class="name-col">幂运算</td>
+                            <td class="example-col">2 ** 3</td>
+                            <td>8 (2的3次方)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="content-h3">🔍 重点理解：整除和取余</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 除法 / vs 整除 //
+print(10 / 3)    # 3.3333333333333335 (保留小数)
+print(10 // 3)   # 3 (只要整数部分)
+
+# 取余 % 的应用
+print(10 % 3)    # 1 (10除以3余1)
+print(17 % 5)    # 2 (17除以5余2)
+
+# 判断奇偶数
+num = 7
+if num % 2 == 0:
+    print("偶数")
+else:
+    print("奇数")   # 输出: 奇数
+
+# 幂运算 **
+print(2 ** 3)    # 8 (2³ = 2×2×2)
+print(3 ** 2)    # 9 (3² = 3×3)
+print(10 ** 0)   # 1 (任何数的0次方都是1)</code></pre>
+                </div>
+
+                <h3 class="content-h3">🎨 字符串的特殊运算</h3>
+                <p class="content-p">
+                    + 和 * 运算符对字符串也有特殊作用：
+                </p>
+
+                <div class="string-ops-demo">
+                    <div class="string-op-item">
+                        <div class="string-op-label">字符串拼接（+）</div>
+                        <div class="string-op-code">"Hello" + " " + "World"</div>
+                        <div class="string-op-result">→ "Hello World"</div>
+                    </div>
+                    <div class="string-op-item">
+                        <div class="string-op-label">字符串重复（*）</div>
+                        <div class="string-op-code">"Python" * 3</div>
+                        <div class="string-op-result">→ "PythonPythonPython"</div>
+                    </div>
+                    <div class="string-op-item">
+                        <div class="string-op-label">实际应用</div>
+                        <div class="string-op-code">"=" * 20</div>
+                        <div class="string-op-result">→ "====================" (生成分割线)</div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 字符串拼接
+first_name = "张"
+last_name = "三"
+full_name = first_name + last_name  # "张三"
+
+# 字符串重复
+border = "=" * 30
+print(border)
+print("欢迎使用Python")
+print(border)
+# 输出:
+# ==============================
+# 欢迎使用Python
+# ==============================
+
+# 注意: 字符串不能和数字直接相加
+age = 14
+# message = "我" + age + "岁"  # 错误! 会报错
+message = "我" + str(age) + "岁"  # 正确! 先转成字符串</code></pre>
+                </div>
+            </section>
+
+            <!-- 4. 比较运算符 -->
+            <section class="content-section animate-in" style="animation-delay:0.3s">
+                <div class="section-label">
+                    <div class="section-label-icon">⚖️</div>
+                    <span>4. 比较运算符</span>
+                </div>
+
+                <p class="content-p">
+                    比较运算符用于比较两个值的大小关系，结果永远是布尔值（True 或 False）。
+                </p>
+
+                <table class="operator-table">
+                    <thead>
+                        <tr>
+                            <th>运算符</th>
+                            <th>名称</th>
+                            <th>示例</th>
+                            <th>结果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="op-col">==</td>
+                            <td class="name-col">等于</td>
+                            <td class="example-col">5 == 5</td>
+                            <td class="truth-true">True</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">!=</td>
+                            <td class="name-col">不等于</td>
+                            <td class="example-col">5 != 3</td>
+                            <td class="truth-true">True</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">&gt;</td>
+                            <td class="name-col">大于</td>
+                            <td class="example-col">5 &gt; 3</td>
+                            <td class="truth-true">True</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">&lt;</td>
+                            <td class="name-col">小于</td>
+                            <td class="example-col">5 &lt; 3</td>
+                            <td class="truth-false">False</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">&gt;=</td>
+                            <td class="name-col">大于等于</td>
+                            <td class="example-col">5 &gt;= 5</td>
+                            <td class="truth-true">True</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">&lt;=</td>
+                            <td class="name-col">小于等于</td>
+                            <td class="example-col">3 &lt;= 5</td>
+                            <td class="truth-true">True</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border-color: #ef4444;">
+                    <div class="info-box-icon">⚠️</div>
+                    <div class="info-box-text">
+                        <strong>注意区分</strong>
+                        <p><code>=</code> 是赋值（把右边的值给左边），<code>==</code> 是比较（判断左右是否相等）。这是新手最容易搞混的地方！</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 数字比较
+print(10 > 5)        # True
+print(10 == 10)      # True
+print(10 != 5)       # True
+print(3 >= 5)        # False
+
+# 字符串也可以比较 (按字典序)
+print("apple" < "banana")   # True
+print("abc" == "abc")       # True
+print("Python" != "Java")   # True
+
+# 实际应用: 判断成绩等级
+score = 85
+if score >= 90:
+    print("优秀")
+elif score >= 60:
+    print("及格")    # 输出这个
+else:
+    print("不及格")
+
+# 判断年龄段
+age = 14
+is_teenager = age >= 13 and age <= 19  # True
+print(f"是青少年吗? {is_teenager}")</code></pre>
+                </div>
+            </section>
+
+            <!-- 5. 逻辑运算符 -->
+            <section class="content-section animate-in" style="animation-delay:0.35s">
+                <div class="section-label">
+                    <div class="section-label-icon">🧠</div>
+                    <span>5. 逻辑运算符</span>
+                </div>
+
+                <p class="content-p">
+                    逻辑运算符用于组合多个条件判断。Python 有三个逻辑运算符：and（与）、or（或）、not（非）。
+                </p>
+
+                <table class="operator-table">
+                    <thead>
+                        <tr>
+                            <th>运算符</th>
+                            <th>名称</th>
+                            <th>说明</th>
+                            <th>示例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="op-col">and</td>
+                            <td class="name-col">与</td>
+                            <td>两个条件都为真才是真</td>
+                            <td class="example-col">True and True → True</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">or</td>
+                            <td class="name-col">或</td>
+                            <td>至少一个条件为真就是真</td>
+                            <td class="example-col">True or False → True</td>
+                        </tr>
+                        <tr>
+                            <td class="op-col">not</td>
+                            <td class="name-col">非</td>
+                            <td>取反，真变假，假变真</td>
+                            <td class="example-col">not True → False</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="content-h3">📊 真值表</h3>
+                <div class="truth-table">
+                    <div class="truth-row truth-header">
+                        <div class="truth-cell">条件A</div>
+                        <div class="truth-cell">条件B</div>
+                        <div class="truth-cell">A and B</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell truth-true">True</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell truth-false">False</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell truth-false">False</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell truth-false">False</div>
+                    </div>
+                </div>
+
+                <div class="truth-table">
+                    <div class="truth-row truth-header">
+                        <div class="truth-cell">条件A</div>
+                        <div class="truth-cell">条件B</div>
+                        <div class="truth-cell">A or B</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell truth-true">True</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell truth-true">True</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell">True</div>
+                        <div class="truth-cell truth-true">True</div>
+                    </div>
+                    <div class="truth-row">
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell">False</div>
+                        <div class="truth-cell truth-false">False</div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># and - 两个条件都要满足
+age = 14
+has_id = True
+can_enter = age >= 13 and has_id  # True (年龄够了，也有证件)
+
+# or - 满足其中一个条件就行
+is_weekend = False
+is_holiday = True
+can_rest = is_weekend or is_holiday  # True (虽然不是周末，但是假期)
+
+# not - 取反
+is_raining = False
+can_play_outside = not is_raining  # True (没下雨，可以出去玩)
+
+# 组合使用
+score = 85
+attitude = "good"
+can_get_award = score >= 80 and attitude == "good"  # True
+print(f"能获奖吗? {can_get_award}")
+
+# 实际场景: 判断能否参加活动
+age = 14
+has_permission = True
+is_member = False
+
+# 必须满足: (年龄>=13 且有家长同意) 或者 是会员
+can_join = (age >= 13 and has_permission) or is_member
+print(f"可以参加吗? {can_join}")  # True</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>记忆技巧</strong>
+                        <p><strong>and</strong> 就像"又...又..."，两个都要满足；<strong>or</strong> 就像"或者"，满足一个就行；<strong>not</strong> 就是"不"，把结果反过来。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. 运算符优先级 -->
+            <section class="content-section animate-in" style="animation-delay:0.4s">
+                <div class="section-label">
+                    <div class="section-label-icon">🎯</div>
+                    <span>6. 运算符优先级</span>
+                </div>
+
+                <p class="content-p">
+                    当一个表达式中有多个运算符时，Python 会按照优先级顺序计算。就像数学中"先乘除，后加减"一样。
+                </p>
+
+                <div class="priority-levels">
+                    <div class="priority-item">
+                        <div class="priority-num">1</div>
+                        <div class="priority-ops">( )</div>
+                        <div class="priority-desc">括号优先级最高，先算括号里的</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">2</div>
+                        <div class="priority-ops">**</div>
+                        <div class="priority-desc">幂运算</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">3</div>
+                        <div class="priority-ops">* / // %</div>
+                        <div class="priority-desc">乘法、除法、整除、取余</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">4</div>
+                        <div class="priority-ops">+ -</div>
+                        <div class="priority-desc">加法、减法</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">5</div>
+                        <div class="priority-ops">&gt; &lt; &gt;= &lt;= == !=</div>
+                        <div class="priority-desc">比较运算符</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">6</div>
+                        <div class="priority-ops">not</div>
+                        <div class="priority-desc">逻辑非</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">7</div>
+                        <div class="priority-ops">and</div>
+                        <div class="priority-desc">逻辑与</div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-num">8</div>
+                        <div class="priority-ops">or</div>
+                        <div class="priority-desc">逻辑或（优先级最低）</div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 示例1: 先乘除，后加减
+result = 10 + 5 * 2     # 先算 5*2=10，再算 10+10=20
+print(result)           # 20
+
+# 示例2: 括号优先
+result = (10 + 5) * 2   # 先算括号 10+5=15，再算 15*2=30
+print(result)           # 30
+
+# 示例3: 幂运算优先级高
+result = 2 * 3 ** 2     # 先算 3²=9，再算 2*9=18
+print(result)           # 18
+
+# 示例4: 比较运算在算术之后
+age = 14
+result = age + 1 > 13   # 先算 age+1=15，再比较 15>13，结果True
+print(result)           # True
+
+# 示例5: 逻辑运算最后算
+result = 10 > 5 and 20 < 30  # 先算比较，再算逻辑
+# 相当于: True and True → True
+print(result)           # True
+
+# 复杂示例
+age = 14
+score = 85
+result = age >= 13 and score > 60 or score == 100
+# 计算顺序:
+# 1. age >= 13 → True
+# 2. score > 60 → True
+# 3. score == 100 → False
+# 4. True and True → True
+# 5. True or False → True
+print(result)           # True</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>建议</strong>
+                        <p>如果不确定优先级，就用括号！括号可以让代码更清晰，也不容易出错。比如 <code>(age >= 13) and (score > 60)</code> 比 <code>age >= 13 and score > 60</code> 更容易理解。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. 综合练习 -->
+            <section class="content-section animate-in" style="animation-delay:0.45s">
+                <div class="section-label">
+                    <div class="section-label-icon">🎮</div>
+                    <span>7. 综合练习：简单计算器</span>
+                </div>
+
+                <p class="content-p">
+                    让我们用学到的知识写一个简单的计算器程序，巩固数据类型、类型转换和运算符的使用。
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 简单计算器
+print("=" * 30)
+print("   欢迎使用 Python 计算器")
+print("=" * 30)
+
+# 输入两个数字（input返回的是字符串，要转换）
+num1 = float(input("请输入第一个数字: "))
+num2 = float(input("请输入第二个数字: "))
+
+# 执行各种运算
+print("\n计算结果:")
+print(f"{num1} + {num2} = {num1 + num2}")
+print(f"{num1} - {num2} = {num1 - num2}")
+print(f"{num1} × {num2} = {num1 * num2}")
+print(f"{num1} ÷ {num2} = {num1 / num2}")
+print(f"{num1} 的 {num2} 次方 = {num1 ** num2}")
+
+# 判断两数大小关系
+if num1 > num2:
+    print(f"\n{num1} 大于 {num2}")
+elif num1 < num2:
+    print(f"\n{num1} 小于 {num2}")
+else:
+    print(f"\n{num1} 等于 {num2}")
+
+print("=" * 30)
+print("感谢使用!")
+print("=" * 30)</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 练习2: 成绩等级判断
+name = input("请输入学生姓名: ")
+score_str = input("请输入成绩: ")
+score = float(score_str)
+
+# 判断成绩是否有效
+if score < 0 or score > 100:
+    print("成绩无效! 必须在0-100之间")
+else:
+    # 判断等级
+    if score >= 90:
+        grade = "A"
+    elif score >= 80:
+        grade = "B"
+    elif score >= 70:
+        grade = "C"
+    elif score >= 60:
+        grade = "D"
+    else:
+        grade = "F"
+    
+    # 判断是否及格
+    is_pass = score >= 60
+    
+    print(f"\n学生: {name}")
+    print(f"成绩: {score}")
+    print(f"等级: {grade}")
+    print(f"是否及格: {'是' if is_pass else '否'}")</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 练习3: 购物结算系统
+print("欢迎来到 Python 商店!")
+
+# 输入商品信息
+item_name = input("商品名称: ")
+price = float(input("单价: "))
+quantity = int(input("数量: "))
+
+# 计算总价
+subtotal = price * quantity
+print(f"\n商品: {item_name}")
+print(f"单价: {price}元")
+print(f"数量: {quantity}个")
+print(f"小计: {subtotal}元")
+
+# 判断是否打折 (满100打9折)
+if subtotal >= 100:
+    discount = subtotal * 0.1  # 打1折
+    final_price = subtotal - discount
+    print(f"满100减10%: -{discount}元")
+    print(f"实付: {final_price}元")
+else:
+    print(f"实付: {subtotal}元")
+    print(f"(再买{100 - subtotal}元即可享受9折优惠)")
+
+print("\n感谢惠顾!")</code></pre>
+                </div>
+            </section>
+
+            <!-- 知识点总结 -->
+            <section class="content-section animate-in" style="animation-delay:0.5s">
+                <div class="section-label">
+                    <div class="section-label-icon">📌</div>
+                    <span>本节要点</span>
+                </div>
+                <div class="summary-box" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 16px; padding: 30px; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);">
+                    <h3 style="margin: 0 0 20px 0; color: #4f46e5; font-size: 20px; font-weight: 700;">🎯 本节重点回顾</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="background: #f0f9ff; padding: 18px; border-left: 4px solid #0ea5e9; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #0369a1; font-size: 16px;">1. 四种基本数据类型</strong>
+                            <p style="margin: 8px 0 0 0; color: #075985; line-height: 1.6;">int（整数）、float（浮点数）、str（字符串）、bool（布尔值）</p>
+                        </div>
+                        <div style="background: #faf5ff; padding: 18px; border-left: 4px solid #a855f7; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #7e22ce; font-size: 16px;">2. 类型转换函数</strong>
+                            <p style="margin: 8px 0 0 0; color: #6b21a8; line-height: 1.6;">int()、float()、str()、bool() 用于转换数据类型</p>
+                        </div>
+                        <div style="background: #fefce8; padding: 18px; border-left: 4px solid #eab308; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #a16207; font-size: 16px;">3. 算术运算符</strong>
+                            <p style="margin: 8px 0 0 0; color: #854d0e; line-height: 1.6;">+ - * / // % ** 用于数学计算</p>
+                        </div>
+                        <div style="background: #f0fdf4; padding: 18px; border-left: 4px solid #22c55e; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #15803d; font-size: 16px;">4. 比较运算符</strong>
+                            <p style="margin: 8px 0 0 0; color: #166534; line-height: 1.6;">== != > < >= <= 用于比较大小，结果是布尔值</p>
+                        </div>
+                        <div style="background: #feedff; padding: 18px; border-left: 4px solid #ee62e2; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #8d1a83; font-size: 16px;">5. 逻辑运算符</strong>
+                            <p style="margin: 8px 0 0 0; color: #8d1a83; line-height: 1.6;">and or not 用于组合多个条件</p>
+                        </div>
+                        <div style="background: #ffffff; padding: 18px; border-left: 4px solid #a1a1a1; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #424242; font-size: 16px;">6. 运算符优先级</strong>
+                            <p style="margin: 8px 0 0 0; color: #868686; line-height: 1.6;">括号 > 幂运算 > 乘除 > 加减 > 比较 > 逻辑</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 课后测验 -->
+            <section class="content-section animate-in" style="animation-delay:0.55s">
+                <div class="section-label">
+                    <div class="section-label-icon">🧠</div>
+                    <span>互动测验</span>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-item" data-question="1">
+                        <div class="quiz-question"><span class="quiz-num">Q1</span>下面哪个是浮点数（float）类型?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>42</code></div>
+                            <div class="quiz-option" data-correct="true">B. <code>3.14</code></div>
+                            <div class="quiz-option" data-correct="false">C. <code>"100"</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>True</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="2">
+                        <div class="quiz-question"><span class="quiz-num">Q2</span><code>int("3.14")</code> 的结果是什么?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 3.14</div>
+                            <div class="quiz-option" data-correct="false">B. 3</div>
+                            <div class="quiz-option" data-correct="true">C. 报错</div>
+                            <div class="quiz-option" data-correct="false">D. "3.14"</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="3">
+                        <div class="quiz-question"><span class="quiz-num">Q3</span><code>10 // 3</code> 的结果是多少?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 3.333...</div>
+                            <div class="quiz-option" data-correct="true">B. 3</div>
+                            <div class="quiz-option" data-correct="false">C. 1</div>
+                            <div class="quiz-option" data-correct="false">D. 4</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="4">
+                        <div class="quiz-question"><span class="quiz-num">Q4</span><code>"Python" * 2</code> 的结果是什么?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 报错</div>
+                            <div class="quiz-option" data-correct="false">B. "Python2"</div>
+                            <div class="quiz-option" data-correct="true">C. "PythonPython"</div>
+                            <div class="quiz-option" data-correct="false">D. "PP"</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="5">
+                        <div class="quiz-question"><span class="quiz-num">Q5</span><code>5 > 3 and 10 < 20</code> 的结果是?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="true">A. True</div>
+                            <div class="quiz-option" data-correct="false">B. False</div>
+                            <div class="quiz-option" data-correct="false">C. None</div>
+                            <div class="quiz-option" data-correct="false">D. 报错</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="6">
+                        <div class="quiz-question"><span class="quiz-num">Q6</span><code>not (True or False)</code> 的结果是?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. True</div>
+                            <div class="quiz-option" data-correct="true">B. False</div>
+                            <div class="quiz-option" data-correct="false">C. None</div>
+                            <div class="quiz-option" data-correct="false">D. 无法计算</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="7">
+                        <div class="quiz-question"><span class="quiz-num">Q7</span><code>2 + 3 * 4</code> 的结果是多少?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 20</div>
+                            <div class="quiz-option" data-correct="true">B. 14</div>
+                            <div class="quiz-option" data-correct="false">C. 11</div>
+                            <div class="quiz-option" data-correct="false">D. 24</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="8">
+                        <div class="quiz-question"><span class="quiz-num">Q8</span>以下哪个表达式的结果是 False?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>10 == 10</code></div>
+                            <div class="quiz-option" data-correct="false">B. <code>"abc" != "xyz"</code></div>
+                            <div class="quiz-option" data-correct="true">C. <code>5 >= 10</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>True or False</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-submit-area" id="quizSubmitArea">
+                        <button class="quiz-submit-btn" onclick="submitQuiz()">提交答案</button>
+                        <div class="quiz-hint">请回答全部 8 道题后再提交</div>
+                    </div>
+
+                    <div class="quiz-result" id="quizResult" style="display:none">
+                        <div class="result-score" id="resultScore"></div>
+                        <div class="result-msg" id="resultMsg"></div>
+                        <button class="retry-btn" onclick="resetQuiz()">🔄 重新作答</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 章节导航 -->
+            <div class="chapter-footer animate-in" style="animation-delay:0.6s">
+                <div class="complete-btn-area">
+                    <button id="markCompleteBtn">标记本节完成</button>
+                </div>
+                <div class="chapter-nav">
+                    <a href="chapter2-2.html" class="nav-btn prev-btn">
+                        <span class="nav-arrow">←</span>
+                        <span>上一节: 变量与标识符</span>
+                    </a>
+                    <a href="chapter2-4.html" class="nav-btn next-btn">
+                        <span>下一节: 数字与字符串</span>
+                        <span class="nav-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '已复制 ✓';
+                setTimeout(() => btn.textContent = '复制代码', 2000);
+            });
+        }
+
+        // ===== 测验逻辑 =====
+        let selectedAnswers = {};
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const item = this.closest('.quiz-item');
+                if (item.classList.contains('answered')) return;
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAnswers[item.dataset.question] = this.dataset.correct === 'true';
+                const total = document.querySelectorAll('.quiz-item').length;
+                const done = Object.keys(selectedAnswers).length;
+                const hint = document.querySelector('.quiz-hint');
+                hint.textContent = done >= total ? '全部回答完毕,可以提交了!' : `已回答 ${done} / ${total} 题`;
+                hint.style.color = done >= total ? '#22c55e' : '#94a3b8';
+            });
+        });
+
+        function submitQuiz() {
+            const items = document.querySelectorAll('.quiz-item');
+            if (Object.keys(selectedAnswers).length < items.length) {
+                alert('请先回答所有题目再提交!'); return;
+            }
+            let correct = 0;
+            items.forEach(item => {
+                item.classList.add('answered');
+                const selected = item.querySelector('.quiz-option.selected');
+                const feedback = item.querySelector('.quiz-feedback');
+                const isCorrect = selectedAnswers[item.dataset.question];
+                if (isCorrect) {
+                    selected.classList.add('correct');
+                    feedback.textContent = '✓ 回答正确!';
+                    feedback.className = 'quiz-feedback feedback-correct';
+                    correct++;
+                } else {
+                    selected.classList.add('wrong');
+                    feedback.textContent = '✗ 回答错误,正确答案已标绿';
+                    feedback.className = 'quiz-feedback feedback-wrong';
+                    item.querySelectorAll('.quiz-option').forEach(o => {
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                }
+            });
+            document.getElementById('quizSubmitArea').style.display = 'none';
+            const result = document.getElementById('quizResult');
+            const scoreEl = document.getElementById('resultScore');
+            result.style.display = 'block';
+            scoreEl.textContent = `${correct} / ${items.length}`;
+            scoreEl.style.color = correct === items.length ? '#22c55e' : correct >= 6 ? '#f59e0b' : '#ef4444';
+            document.getElementById('resultMsg').textContent =
+                correct === items.length ? '🎉 全部答对!你已完全掌握数据类型和运算符,太棒了!' :
+                correct >= 6 ? '👍 答得不错!有个别地方可以再复习一下。' :
+                '💪 没关系,多看几遍内容,理解每种运算符的作用,再来挑战一次!';
+        }
+
+        function resetQuiz() {
+            selectedAnswers = {};
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.classList.remove('answered');
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected','correct','wrong'));
+                const fb = item.querySelector('.quiz-feedback');
+                fb.textContent = ''; fb.className = 'quiz-feedback';
+            });
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizSubmitArea').style.display = 'flex';
+            const hint = document.querySelector('.quiz-hint');
+            hint.textContent = '请回答全部 8 道题后再提交';
+            hint.style.color = '#94a3b8';
+        }
+
+        // ===== 进度条动画 =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('progressBar').style.width = '15%';
+                document.getElementById('progressText').textContent = '15%';
+            }, 500);
+        });
+    </script>
+</body>
+</html>

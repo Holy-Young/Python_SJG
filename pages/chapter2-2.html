@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.2 变量与标识符</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/chapter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        /* 变量盒子动画 */
+        .variable-box-demo {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .var-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .var-box:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        .var-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+        .var-value {
+            font-size: 32px;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* 命名规则对比表格 */
+        .naming-rules-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .naming-rules-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .naming-rules-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .naming-rules-table tbody tr {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+        .naming-rules-table tbody tr:hover {
+            background: #f3f4f6;
+            transform: translateX(2px);
+        }
+        .naming-rules-table td {
+            padding: 14px 16px;
+        }
+        .naming-rules-table .rule-col {
+            font-weight: 600;
+            color: #4f46e5;
+        }
+        .naming-rules-table .good-col {
+            color: #059669;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+        .naming-rules-table .bad-col {
+            color: #dc2626;
+            font-family: 'Courier New', monospace;
+            text-decoration: line-through;
+        }
+        
+        /* 关键字网格 */
+        .keywords-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .keyword-tag {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+            transition: transform 0.2s ease;
+        }
+        .keyword-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 赋值动画演示 */
+        .assignment-demo {
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .assignment-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .assignment-arrow {
+            font-size: 32px;
+            color: #667eea;
+        }
+        .assignment-code {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            color: #4f46e5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .assignment-result {
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .variable-box-demo {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .var-box {
+                min-width: 100%;
+            }
+            .keywords-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 8px;
+            }
+            .naming-rules-table {
+                font-size: 13px;
+            }
+            .naming-rules-table th,
+            .naming-rules-table td {
+                padding: 10px 12px;
+            }
+            .assignment-step {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .assignment-arrow {
+                transform: rotate(90deg);
+            }
+            .comparison-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .style-showcase {
+                gap: 15px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="nav-logo">
+            <button id="menuToggle" class="menu-toggle">☰</button>
+            <a href="../index.html">🐍 Python 入门课</a>
+        </div>
+        <div class="nav-info">专为初中生设计 · 从零开始学编程</div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar"></aside>
+        <main class="main-content">
+
+            <div class="breadcrumb animate-in">
+                <a href="../index.html">🏠 首页</a>
+                <span class="bc-sep">/</span>
+                <a href="chapter2.html">第二章</a>
+                <span class="bc-sep">/</span>
+                <span class="bc-current">2.2 变量与标识符</span>
+            </div>
+
+            <div class="chapter-hero animate-in">
+                <div class="chapter-hero-bg">
+                    <div class="ch-circle cc1"></div>
+                    <div class="ch-circle cc2"></div>
+                </div>
+                <div class="chapter-hero-content">
+                    <div class="chapter-hero-left">
+                        <div class="chapter-meta">
+                            <span class="badge badge-beginner">入门</span>
+                            <span class="chapter-num">第二章 · 第 2 节</span>
+                        </div>
+                        <h1>变量与标识符</h1>
+                        <p>学习如何用变量存储数据,掌握变量命名规则和标识符的使用方法。变量是编程的核心概念,理解它你就能让程序"记住"各种信息!</p>
+                    </div>
+                    <div class="chapter-hero-right">
+                        <div class="chapter-info-pill">🗺️ 含思维导图</div>
+                        <div class="chapter-info-pill">🎬 含视频讲解</div>
+                        <div class="chapter-info-pill">💻 含代码示例</div>
+                        <div class="chapter-info-pill">🧠 含互动测验</div>
+                    </div>
+                </div>
+                <div class="chapter-progress">
+                    <div class="progress-label-row">
+                        <span>📊 本章学习进度</span>
+                        <span class="progress-text"></span>
+                    </div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                </div>
+            </div>
+
+            <!-- 思维导图 -->
+            <section class="content-section animate-in" style="animation-delay:0.05s">
+                <div class="section-label">
+                    <span class="section-label-icon">🗺️</span>
+                    <span>本节知识结构</span>
+                </div>
+                <p class="content-p">在开始学习之前,先来看看这一节我们要学哪些内容:</p>
+                <div class="mindmap">
+                    <div class="mindmap-center">第二节<br>变量与标识符</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch branch-blue">
+                            <div class="branch-node">① 变量的概念</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">什么是变量</div>
+                                <div class="branch-leaf">为什么需要变量</div>
+                                <div class="branch-leaf">变量与字面量</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-indigo">
+                            <div class="branch-node">② 变量的使用</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">定义变量</div>
+                                <div class="branch-leaf">赋值操作</div>
+                                <div class="branch-leaf">修改变量</div>
+                                <div class="branch-leaf">使用变量</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-violet">
+                            <div class="branch-node">③ 标识符规则</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">命名规范</div>
+                                <div class="branch-leaf">保留字/关键字</div>
+                                <div class="branch-leaf">大小写敏感</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-green">
+                            <div class="branch-node">④ 命名建议</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">见名知意</div>
+                                <div class="branch-leaf">下划线命名</div>
+                                <div class="branch-leaf">驼峰命名</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 视频 -->
+            <section class="content-section animate-in" style="animation-delay:0.1s">
+                <div class="section-label">
+                    <span class="section-label-icon">🎬</span>
+                    <span>视频讲解</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1qW4y1a7fU&autoplay=0"
+                        scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+                </div>
+                <div class="video-tip">
+                    <span>💡</span><span>建议先看完视频,再阅读下方的图文讲解,效果更好</span>
+                </div>
+            </section>
+
+            <!-- 什么是变量 -->
+            <section class="content-section animate-in" style="animation-delay:0.12s">
+                <div class="section-label">
+                    <span class="section-label-icon">📦</span>
+                    <span>① 变量的概念</span>
+                </div>
+                <p class="content-p">在上一节我们学习了字面量——那些直接写在代码里的固定值。但是,如果我们想让程序"记住"一些数据,或者让数据可以改变,就需要用到<strong>变量(Variable)</strong>。</p>
+                
+                <div class="info-box">
+                    <div class="info-box-icon">🎒</div>
+                    <div class="info-box-text">
+                        <strong>生活中的例子</strong>
+                        <p>你可以把变量想象成一个<strong>带标签的盒子</strong>。盒子上写着名字(变量名),盒子里装着东西(变量的值)。你随时可以往盒子里放新东西,或者拿出来看看里面装的是什么。</p>
+                        <p>比如:你有一个叫"书包"的盒子,今天里面装的是数学课本,明天可以换成语文课本。盒子的名字不变,但里面的内容可以改变!</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">变量 vs 字面量</h3>
+                <p class="content-p">让我们通过对比来理解变量和字面量的区别:</p>
+                
+                <div class="comparison-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div class="compare-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                        <div style="font-size: 32px; margin-bottom: 10px;">💎</div>
+                        <h4 style="margin: 0 0 10px 0; color: #92400e; font-size: 18px; font-weight: 700;">字面量</h4>
+                        <ul style="margin: 0; padding-left: 20px; color: #78350f; line-height: 1.8;">
+                            <li>固定不变的值</li>
+                            <li>直接写在代码中</li>
+                            <li>如: 100, "你好", 3.14</li>
+                            <li>不能被修改</li>
+                        </ul>
+                    </div>
+                    <div class="compare-card" style="background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                        <div style="font-size: 32px; margin-bottom: 10px;">📦</div>
+                        <h4 style="margin: 0 0 10px 0; color: #5b21b6; font-size: 18px; font-weight: 700;">变量</h4>
+                        <ul style="margin: 0; padding-left: 20px; color: #6b21a8; line-height: 1.8;">
+                            <li>可以改变的值</li>
+                            <li>有一个名字(标识符)</li>
+                            <li>如: age, name, score</li>
+                            <li>可以被修改和重新赋值</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">为什么需要变量?</h3>
+                <p class="content-p">想象一下,如果没有变量会怎么样:</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">❌ 没有变量的写法</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 计算一个学生的总分和平均分
+print("语文:", 85)
+print("数学:", 92)
+print("英语:", 88)
+print("总分:", 85 + 92 + 88)
+print("平均分:", (85 + 92 + 88) / 3)
+
+# 如果分数改了,要改很多地方!太麻烦了!</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">✅ 有变量的写法</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 用变量存储分数
+chinese = 85
+math = 92
+english = 88
+
+# 计算总分和平均分
+total = chinese + math + english
+average = total / 3
+
+print("语文:", chinese)
+print("数学:", math)
+print("英语:", english)
+print("总分:", total)
+print("平均分:", average)
+
+# 分数改了,只需要改一个地方!</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-icon">✨</div>
+                    <div class="success-text">
+                        <strong>变量的好处</strong>
+                        <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                            <li><strong>方便修改:</strong> 只需要改变量的值,不用到处修改代码</li>
+                            <li><strong>代码可读:</strong> 看到变量名就知道它代表什么意思</li>
+                            <li><strong>复用数据:</strong> 同一个数据可以在多个地方使用</li>
+                            <li><strong>程序灵活:</strong> 可以让数据在程序运行中动态变化</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 变量的使用 -->
+            <section class="content-section animate-in" style="animation-delay:0.15s">
+                <div class="section-label">
+                    <span class="section-label-icon">🎯</span>
+                    <span>② 变量的使用</span>
+                </div>
+                
+                <h3 class="content-h3">定义变量和赋值</h3>
+                <p class="content-p">在 Python 中,定义变量非常简单,只需要用 <code>=</code> 把值赋给一个名字就可以了。这个过程叫做<strong>赋值(Assignment)</strong>。</p>
+
+                <div class="assignment-demo">
+                    <h4 style="margin: 0 0 20px 0; color: #4f46e5; font-size: 18px;">赋值操作演示</h4>
+                    <div class="assignment-step">
+                        <div class="assignment-code">age = 14</div>
+                        <div class="assignment-arrow">→</div>
+                        <div class="assignment-result">创建变量 age, 存入值 14</div>
+                    </div>
+                    <div class="assignment-step">
+                        <div class="assignment-code">name = "小明"</div>
+                        <div class="assignment-arrow">→</div>
+                        <div class="assignment-result">创建变量 name, 存入值 "小明"</div>
+                    </div>
+                    <div class="assignment-step">
+                        <div class="assignment-code">is_student = True</div>
+                        <div class="assignment-arrow">→</div>
+                        <div class="assignment-result">创建变量 is_student, 存入值 True</div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-text">
+                        <strong>重要提醒</strong>
+                        <p>在 Python 中,<code>=</code> 不是"等于"的意思,而是<strong>赋值</strong>的意思!它的作用是把右边的值<strong>存入</strong>左边的变量中。</p>
+                        <p>所以 <code>age = 14</code> 读作"把 14 赋值给 age",而不是"age 等于 14"。</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">💻 变量的基本操作</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 1. 定义变量
+name = "小红"
+age = 13
+height = 1.58
+is_student = True
+
+# 2. 使用变量
+print("姓名:", name)
+print("年龄:", age)
+print("身高:", height, "米")
+print("是学生吗?", is_student)
+
+# 3. 修改变量的值
+age = 14  # 过了一年,年龄变了
+height = 1.62  # 长高了!
+
+print("
+一年后...")
+print("年龄:", age)
+print("身高:", height, "米")</code></pre>
+                </div>
+
+                <div class="code-output-box">
+                    <div class="output-header">▶️ 运行结果</div>
+                    <div class="output-content">姓名: 小红
+年龄: 13
+身高: 1.58 米
+是学生吗? True
+
+一年后...
+年龄: 14
+身高: 1.62 米</div>
+                </div>
+
+                <h3 class="content-h3">变量的特点</h3>
+                <div class="feature-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div class="feature-card" style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🔄</div>
+                        <h4 style="margin: 0 0 8px 0; color: #047857; font-size: 17px; font-weight: 700;">可以重新赋值</h4>
+                        <p style="margin: 0; color: #065f46; font-size: 14px; line-height: 1.6;">同一个变量可以多次赋值,新值会覆盖旧值</p>
+                    </div>
+                    <div class="feature-card" style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🎭</div>
+                        <h4 style="margin: 0 0 8px 0; color: #b45309; font-size: 17px; font-weight: 700;">类型可以改变</h4>
+                        <p style="margin: 0; color: #92400e; font-size: 14px; line-height: 1.6;">Python 变量可以存储不同类型的值</p>
+                    </div>
+                    <div class="feature-card" style="background: #ddd6fe; border-left: 4px solid #8b5cf6; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🎯</div>
+                        <h4 style="margin: 0 0 8px 0; color: #6b21a8; font-size: 17px; font-weight: 700;">使用前必须赋值</h4>
+                        <p style="margin: 0; color: #5b21b6; font-size: 14px; line-height: 1.6;">不能使用没有定义的变量,会报错!</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">🔄 变量的灵活性</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># Python 变量非常灵活!
+
+x = 100       # x 是整数
+print(x)      # 输出: 100
+
+x = "你好"    # x 可以变成字符串
+print(x)      # 输出: 你好
+
+x = 3.14      # x 又可以变成小数
+print(x)      # 输出: 3.14
+
+x = True      # x 还可以变成布尔值
+print(x)      # 输出: True
+
+# 这在 Python 中完全没问题!
+# 但在有些编程语言(如 Java、C++)中是不允许的</code></pre>
+                </div>
+
+                <div class="variable-box-demo">
+                    <div class="var-box">
+                        <div class="var-name">score</div>
+                        <div class="var-value">95</div>
+                    </div>
+                    <div class="var-box" style="background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);">
+                        <div class="var-name">name</div>
+                        <div class="var-value">"李华"</div>
+                    </div>
+                    <div class="var-box" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <div class="var-name">temperature</div>
+                        <div class="var-value">36.5</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 标识符规则 -->
+            <section class="content-section animate-in" style="animation-delay:0.18s">
+                <div class="section-label">
+                    <span class="section-label-icon">📝</span>
+                    <span>③ 标识符规则</span>
+                </div>
+                <p class="content-p"><strong>标识符(Identifier)</strong>就是我们给变量、函数、类等起的名字。在 Python 中,标识符的命名有一些规则,必须遵守,否则程序会报错!</p>
+
+                <h3 class="content-h3">标识符的命名规则 📏</h3>
+                <div class="info-box" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b;">
+                    <div class="info-box-icon">⚡</div>
+                    <div class="info-box-text">
+                        <strong>必须遵守的硬性规则(违反会报错!)</strong>
+                        <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #78350f;">
+                            <li><strong>只能包含:</strong> 字母(a-z, A-Z)、数字(0-9)、下划线(_)</li>
+                            <li><strong>不能以数字开头:</strong> 比如 <code>1name</code> 是错误的</li>
+                            <li><strong>不能使用关键字:</strong> 比如 <code>if</code>, <code>for</code>, <code>print</code> 等是保留字</li>
+                            <li><strong>大小写敏感:</strong> <code>Name</code> 和 <code>name</code> 是两个不同的变量</li>
+                            <li><strong>不能有空格:</strong> 不能写成 <code>my name</code>,要写成 <code>my_name</code></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <table class="naming-rules-table">
+                    <thead>
+                        <tr>
+                            <th>规则说明</th>
+                            <th>✅ 正确示例</th>
+                            <th>❌ 错误示例</th>
+                            <th>错误原因</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rule-col">字母开头</td>
+                            <td class="good-col">name, age, score</td>
+                            <td class="bad-col">1name, 2age</td>
+                            <td>不能以数字开头</td>
+                        </tr>
+                        <tr>
+                            <td class="rule-col">可以用下划线</td>
+                            <td class="good-col">_name, my_age, __private</td>
+                            <td class="bad-col">my-age, my age</td>
+                            <td>不能用连字符或空格</td>
+                        </tr>
+                        <tr>
+                            <td class="rule-col">可以包含数字</td>
+                            <td class="good-col">score1, student2, var_123</td>
+                            <td class="bad-col">1score, 2student</td>
+                            <td>数字不能在开头</td>
+                        </tr>
+                        <tr>
+                            <td class="rule-col">大小写敏感</td>
+                            <td class="good-col">Name, name, NAME</td>
+                            <td class="bad-col">(这三个是不同的变量)</td>
+                            <td>Python区分大小写</td>
+                        </tr>
+                        <tr>
+                            <td class="rule-col">不能用关键字</td>
+                            <td class="good-col">my_if, for_loop, class_name</td>
+                            <td class="bad-col">if, for, class</td>
+                            <td>这些是Python保留字</td>
+                        </tr>
+                        <tr>
+                            <td class="rule-col">支持中文(不推荐)</td>
+                            <td class="good-col">名字, 年龄</td>
+                            <td class="bad-col">(虽然可以,但不推荐)</td>
+                            <td>国际化代码应用英文</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="content-h3">Python 关键字(保留字) 🚫</h3>
+                <p class="content-p">Python 有一些特殊的单词,它们被语言本身占用了,不能用作变量名。这些词叫做<strong>关键字</strong>或<strong>保留字</strong>。</p>
+
+                <div class="keywords-grid">
+                    <div class="keyword-tag">and</div>
+                    <div class="keyword-tag">as</div>
+                    <div class="keyword-tag">assert</div>
+                    <div class="keyword-tag">break</div>
+                    <div class="keyword-tag">class</div>
+                    <div class="keyword-tag">continue</div>
+                    <div class="keyword-tag">def</div>
+                    <div class="keyword-tag">del</div>
+                    <div class="keyword-tag">elif</div>
+                    <div class="keyword-tag">else</div>
+                    <div class="keyword-tag">except</div>
+                    <div class="keyword-tag">False</div>
+                    <div class="keyword-tag">finally</div>
+                    <div class="keyword-tag">for</div>
+                    <div class="keyword-tag">from</div>
+                    <div class="keyword-tag">global</div>
+                    <div class="keyword-tag">if</div>
+                    <div class="keyword-tag">import</div>
+                    <div class="keyword-tag">in</div>
+                    <div class="keyword-tag">is</div>
+                    <div class="keyword-tag">lambda</div>
+                    <div class="keyword-tag">None</div>
+                    <div class="keyword-tag">nonlocal</div>
+                    <div class="keyword-tag">not</div>
+                    <div class="keyword-tag">or</div>
+                    <div class="keyword-tag">pass</div>
+                    <div class="keyword-tag">raise</div>
+                    <div class="keyword-tag">return</div>
+                    <div class="keyword-tag">True</div>
+                    <div class="keyword-tag">try</div>
+                    <div class="keyword-tag">while</div>
+                    <div class="keyword-tag">with</div>
+                    <div class="keyword-tag">yield</div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">🔍 查看所有关键字</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 你可以用这段代码查看 Python 的所有关键字
+import keyword
+print(keyword.kwlist)
+
+# 输出: ['False', 'None', 'True', 'and', 'as', 'assert', ...]</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-icon">💡</div>
+                    <div class="warning-text">
+                        <strong>小提示</strong>
+                        <p>虽然 Python 在技术上支持使用中文、日文等作为变量名,但在实际编程中<strong>强烈不推荐</strong>这样做!</p>
+                        <p>原因: ① 团队协作困难 ② 在某些系统可能有编码问题 ③ 不符合国际编程规范</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">❌ 错误的命名示例</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 这些都是错误的命名,会导致程序报错!
+
+1name = "小明"        # ❌ 不能以数字开头
+my-age = 14          # ❌ 不能使用连字符
+my name = "李华"     # ❌ 不能包含空格
+for = 10             # ❌ for 是关键字
+class = "三年二班"   # ❌ class 是关键字
+@score = 95          # ❌ 不能使用特殊符号</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">✅ 正确的命名示例</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 这些都是正确的命名
+
+name1 = "小明"           # ✅ 可以包含数字(但不能开头)
+my_age = 14             # ✅ 使用下划线连接
+myName = "李华"         # ✅ 驼峰命名法
+student_score = 95      # ✅ 见名知意
+_private_data = "隐藏"   # ✅ 下划线开头(通常表示私有)
+MAX_VALUE = 100         # ✅ 全大写(通常表示常量)
+for_loop_count = 5      # ✅ 避开关键字
+class_name = "三年二班"  # ✅ 避开关键字</code></pre>
+                </div>
+            </section>
+
+            <!-- 命名建议 -->
+            <section class="content-section animate-in" style="animation-delay:0.20s">
+                <div class="section-label">
+                    <span class="section-label-icon">✨</span>
+                    <span>④ 命名建议</span>
+                </div>
+                <p class="content-p">除了必须遵守的规则外,还有一些<strong>最佳实践</strong>和<strong>约定俗成的规范</strong>。虽然不遵守不会报错,但遵守这些规范能让你的代码更专业、更易读!</p>
+
+                <h3 class="content-h3">命名风格 🎨</h3>
+                <div class="style-showcase" style="display: grid; gap: 20px; margin: 25px 0;">
+                    <div style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); padding: 25px; border-radius: 12px; border-left: 5px solid #6366f1; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);">
+                        <h4 style="margin: 0 0 15px 0; color: #3730a3; display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700;">
+                            <span style="font-size: 24px;">🐍</span>
+                            <span>下划线命名法 (snake_case)</span>
+                        </h4>
+                        <p style="margin: 0 0 12px 0; color: #4338ca; font-size: 15px;"><strong>推荐用于:</strong> 变量名、函数名</p>
+                        <div style="background: white; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; color: #4f46e5; font-size: 15px; line-height: 1.8;">
+                            student_name = "小明"<br>
+                            total_score = 285<br>
+                            is_pass = True<br>
+                            max_retry_count = 3
+                        </div>
+                        <p style="margin: 12px 0 0 0; color: #4338ca; font-size: 14px; line-height: 1.6;">✅ 特点: 单词之间用下划线分隔,全部小写,Python 官方推荐!</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 25px; border-radius: 12px; border-left: 5px solid #f59e0b; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);">
+                        <h4 style="margin: 0 0 15px 0; color: #92400e; display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700;">
+                            <span style="font-size: 24px;">🐫</span>
+                            <span>小驼峰命名法 (camelCase)</span>
+                        </h4>
+                        <p style="margin: 0 0 12px 0; color: #78350f; font-size: 15px;"><strong>推荐用于:</strong> 部分变量(看团队习惯)</p>
+                        <div style="background: white; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; color: #b45309; font-size: 15px; line-height: 1.8;">
+                            studentName = "小明"<br>
+                            totalScore = 285<br>
+                            isPass = True<br>
+                            maxRetryCount = 3
+                        </div>
+                        <p style="margin: 12px 0 0 0; color: #78350f; font-size: 14px; line-height: 1.6;">✅ 特点: 第一个单词小写,后续单词首字母大写</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 25px; border-radius: 12px; border-left: 5px solid #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);">
+                        <h4 style="margin: 0 0 15px 0; color: #065f46; display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700;">
+                            <span style="font-size: 24px;">🦒</span>
+                            <span>大驼峰命名法 (PascalCase)</span>
+                        </h4>
+                        <p style="margin: 0 0 12px 0; color: #047857; font-size: 15px;"><strong>推荐用于:</strong> 类名</p>
+                        <div style="background: white; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; color: #059669; font-size: 15px; line-height: 1.8;">
+                            StudentInfo<br>
+                            ScoreCalculator<br>
+                            DataManager<br>
+                            GameController
+                        </div>
+                        <p style="margin: 12px 0 0 0; color: #047857; font-size: 14px; line-height: 1.6;">✅ 特点: 每个单词首字母都大写(后面学类的时候会用到)</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 25px; border-radius: 12px; border-left: 5px solid #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);">
+                        <h4 style="margin: 0 0 15px 0; color: #991b1b; display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700;">
+                            <span style="font-size: 24px;">📢</span>
+                            <span>全大写命名法 (UPPER_CASE)</span>
+                        </h4>
+                        <p style="margin: 0 0 12px 0; color: #7f1d1d; font-size: 15px;"><strong>推荐用于:</strong> 常量</p>
+                        <div style="background: white; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; color: #dc2626; font-size: 15px; line-height: 1.8;">
+                            MAX_SCORE = 100<br>
+                            PI = 3.14159<br>
+                            DEFAULT_NAME = "未命名"<br>
+                            RETRY_LIMIT = 3
+                        </div>
+                        <p style="margin: 12px 0 0 0; color: #7f1d1d; font-size: 14px; line-height: 1.6;">✅ 特点: 全部大写,下划线分隔,表示这个值不应该被修改</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">见名知意原则 👁️</h3>
+                <p class="content-p">好的变量名应该让人一眼就能看出它存储的是什么数据。这是编程中最重要的原则之一!</p>
+
+                <div class="do-dont-grid" style="display: grid; grid-template-columns: 1fr; gap: 20px; margin: 25px 0;">
+                    <div style="background: #fef2f2; border: 2px solid #fca5a5; border-radius: 12px; padding: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: #dc2626; font-size: 18px; font-weight: 700;">❌ 不好的命名</h4>
+                        <div class="code-block" style="margin: 0;">
+                            <pre style="margin: 0;"><code class="language-python">a = "小明"       # 看不出是什么
+b = 14          # 完全不知道含义
+x = 95          # x 代表什么?
+n = "三年二班"   # n 太模糊了
+temp = 36.5     # temp 可能是温度,也可能是临时变量</code></pre>
+                        </div>
+                    </div>
+
+                    <div style="background: #f0fdf4; border: 2px solid #86efac; border-radius: 12px; padding: 20px;">
+                        <h4 style="margin: 0 0 15px 0; color: #16a34a; font-size: 18px; font-weight: 700;">✅ 好的命名</h4>
+                        <div class="code-block" style="margin: 0;">
+                            <pre style="margin: 0;"><code class="language-python">student_name = "小明"      # 一看就知道是学生姓名
+age = 14                  # 清楚表示年龄
+math_score = 95           # 明确是数学分数
+class_name = "三年二班"    # 清楚表示班级名称
+body_temperature = 36.5   # 明确是体温</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">其他命名建议 💡</h3>
+                <div class="tips-list" style="margin: 25px 0;">
+                    <div class="tip-item" style="display: flex; gap: 15px; padding: 18px; background: #f9fafb; border-left: 4px solid #6366f1; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 24px; flex-shrink: 0;">1️⃣</div>
+                        <div>
+                            <strong style="color: #4f46e5; font-size: 16px;">避免使用单个字母</strong>
+                            <p style="margin: 8px 0 0 0; color: #64748b; line-height: 1.6;">除非是在很短的代码块中做临时变量(如循环中的 <code>i</code>, <code>j</code>),否则不要用 <code>a</code>, <code>b</code>, <code>x</code>, <code>y</code> 这种名字</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item" style="display: flex; gap: 15px; padding: 18px; background: #f9fafb; border-left: 4px solid #10b981; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 24px; flex-shrink: 0;">2️⃣</div>
+                        <div>
+                            <strong style="color: #059669; font-size: 16px;">长度适中</strong>
+                            <p style="margin: 8px 0 0 0; color: #64748b; line-height: 1.6;">不要太短(<code>n</code>),也不要太长(<code>this_is_a_very_long_variable_name_that_stores_student_score</code>)。2-4个单词最合适</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item" style="display: flex; gap: 15px; padding: 18px; background: #f9fafb; border-left: 4px solid #f59e0b; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 24px; flex-shrink: 0;">3️⃣</div>
+                        <div>
+                            <strong style="color: #d97706; font-size: 16px;">使用英文</strong>
+                            <p style="margin: 8px 0 0 0; color: #64748b; line-height: 1.6;">虽然 Python 支持中文变量名,但在正式项目中应该用英文。如果英文不好,可以用翻译工具帮忙</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item" style="display: flex; gap: 15px; padding: 18px; background: #f9fafb; border-left: 4px solid #8b5cf6; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 24px; flex-shrink: 0;">4️⃣</div>
+                        <div>
+                            <strong style="color: #7c3aed; font-size: 16px;">布尔变量用 is/has 开头</strong>
+                            <p style="margin: 8px 0 0 0; color: #64748b; line-height: 1.6;">表示真假的变量,通常用 <code>is_</code>, <code>has_</code>, <code>can_</code> 开头,如 <code>is_student</code>, <code>has_homework</code>, <code>can_swim</code></p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item" style="display: flex; gap: 15px; padding: 18px; background: #f9fafb; border-left: 4px solid #ec4899; border-radius: 8px; margin-bottom: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 24px; flex-shrink: 0;">5️⃣</div>
+                        <div>
+                            <strong style="color: #db2777; font-size: 16px;">保持一致性</strong>
+                            <p style="margin: 8px 0 0 0; color: #64748b; line-height: 1.6;">在同一个项目中,应该保持命名风格一致。如果用下划线法,就全部用下划线法;如果用驼峰法,就全部用驼峰法</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">🌟 完整的命名示例</span>
+                        <button onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 学生信息管理示例 - 展示好的命名习惯
+
+# 常量(全大写)
+MAX_STUDENTS = 50
+PASS_SCORE = 60
+
+# 学生基本信息(下划线命名法)
+student_name = "张三"
+student_age = 14
+student_gender = "男"
+student_id = "2024001"
+
+# 成绩信息
+chinese_score = 85
+math_score = 92
+english_score = 88
+total_score = chinese_score + math_score + english_score
+average_score = total_score / 3
+
+# 布尔值(is开头)
+is_pass = average_score >= PASS_SCORE
+is_excellent = average_score >= 90
+has_homework = True
+can_graduate = True
+
+# 输出结果
+print(f"学生姓名: {student_name}")
+print(f"总分: {total_score}")
+print(f"平均分: {average_score:.2f}")
+print(f"是否及格: {is_pass}")
+print(f"是否优秀: {is_excellent}")</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-icon">🎯</div>
+                    <div class="success-text">
+                        <strong>命名的黄金法则</strong>
+                        <p><strong>让别人(或三个月后的自己)能立即看懂你的代码!</strong></p>
+                        <p>好的命名就像给代码贴上了清晰的标签,让程序的逻辑一目了然。花点时间想一个好名字,比写一堆注释解释要好得多!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 课堂练习 -->
+            <section class="content-section animate-in" style="animation-delay:0.22s">
+                <div class="section-label">
+                    <span class="section-label-icon">💪</span>
+                    <span>课堂练习</span>
+                </div>
+                <p class="content-p">现在轮到你动手了!试着完成下面的练习题,巩固这节课学到的知识:</p>
+
+                <div class="exercise-box" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div class="exercise-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span class="exercise-icon" style="font-size: 24px;">📝</span>
+                        <span style="font-weight: 700; font-size: 17px; color: #1e40af;">练习 1: 个人信息卡</span>
+                    </div>
+                    <div class="exercise-content">
+                        <p style="margin: 0 0 8px 0; line-height: 1.6;"><strong>任务:</strong> 创建变量存储你的个人信息,包括姓名、年龄、身高、是否是学生,然后打印出来。</p>
+                        <p style="margin: 0; line-height: 1.6;"><strong>要求:</strong> 使用有意义的变量名,遵循下划线命名法。</p>
+                    </div>
+                </div>
+
+                
+                <div class="exercise-box" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div class="exercise-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span class="exercise-icon" style="font-size: 24px;">📝</span>
+                        <span style="font-weight: 700; font-size: 17px; color: #b45309;">练习 2: 找出错误</span>
+                    </div>
+                    <div class="exercise-content">
+                        <p style="margin: 0 0 12px 0; line-height: 1.6;"><strong>任务:</strong> 下面的代码有哪些命名错误?请指出来并改正。</p>
+                        <div class="code-block" style="margin-top: 15px;">
+                            <pre><code class="language-python">1name = "小明"
+my-age = 14
+class = "三年二班"
+total score = 285
+for = 10</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </section>
+
+            <!-- 本节小结 -->
+            <section class="content-section animate-in" style="animation-delay:0.24s">
+                <div class="section-label">
+                    <span class="section-label-icon">📚</span>
+                    <span>本节小结</span>
+                </div>
+                <div class="summary-box" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 16px; padding: 30px; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);">
+                    <h3 style="margin: 0 0 20px 0; color: #4f46e5; font-size: 20px; font-weight: 700;">🎯 本节重点回顾</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="background: #f0f9ff; padding: 18px; border-left: 4px solid #0ea5e9; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #0369a1; font-size: 16px;">1. 变量的概念</strong>
+                            <p style="margin: 8px 0 0 0; color: #075985; line-height: 1.6;">变量是存储数据的容器,就像带标签的盒子,可以随时改变里面的内容</p>
+                        </div>
+                        <div style="background: #faf5ff; padding: 18px; border-left: 4px solid #a855f7; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #7e22ce; font-size: 16px;">2. 赋值操作</strong>
+                            <p style="margin: 8px 0 0 0; color: #6b21a8; line-height: 1.6;">用 <code>=</code> 给变量赋值,格式是 <code>变量名 = 值</code>,不是"等于"而是"赋值"</p>
+                        </div>
+                        <div style="background: #fefce8; padding: 18px; border-left: 4px solid #eab308; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #a16207; font-size: 16px;">3. 标识符规则</strong>
+                            <p style="margin: 8px 0 0 0; color: #854d0e; line-height: 1.6;">只能用字母、数字、下划线;不能以数字开头;不能用关键字;大小写敏感</p>
+                        </div>
+                        <div style="background: #f0fdf4; padding: 18px; border-left: 4px solid #22c55e; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                            <strong style="color: #15803d; font-size: 16px;">4. 命名建议</strong>
+                            <p style="margin: 8px 0 0 0; color: #166534; line-height: 1.6;">见名知意、使用下划线命名法、保持一致性、用英文命名</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 互动测验 -->
+            <section class="content-section animate-in" style="animation-delay:0.26s">
+                <div class="section-label">
+                    <span class="section-label-icon">🧠</span>
+                    <span>互动测验</span>
+                </div>
+                <p class="content-p">完成下面的测验,检验你是否真正掌握了这节课的内容:</p>
+
+                <div class="quiz-container">
+                    <div class="quiz-item" data-question="1">
+                        <div class="quiz-question"><span class="quiz-num">Q1</span>在 Python 中,<code>=</code> 符号的作用是什么?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 判断两个值是否相等</div>
+                            <div class="quiz-option" data-correct="true">B. 把右边的值赋给左边的变量</div>
+                            <div class="quiz-option" data-correct="false">C. 比较两个变量的大小</div>
+                            <div class="quiz-option" data-correct="false">D. 连接两个字符串</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="2">
+                        <div class="quiz-question"><span class="quiz-num">Q2</span>下面哪个变量名是<strong>合法</strong>的?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>1student</code></div>
+                            <div class="quiz-option" data-correct="false">B. <code>my-age</code></div>
+                            <div class="quiz-option" data-correct="true">C. <code>_score</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>class</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="3">
+                        <div class="quiz-question"><span class="quiz-num">Q3</span>Python 的变量是否需要声明类型?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="true">A. 不需要,Python 会自动识别类型</div>
+                            <div class="quiz-option" data-correct="false">B. 需要,必须写 <code>int age = 14</code></div>
+                            <div class="quiz-option" data-correct="false">C. 看情况,有时需要有时不需要</div>
+                            <div class="quiz-option" data-correct="false">D. 只有整数需要声明类型</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="4">
+                        <div class="quiz-question"><span class="quiz-num">Q4</span>变量 <code>Name</code> 和 <code>name</code> 在 Python 中是同一个变量吗?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 是的,Python 不区分大小写</div>
+                            <div class="quiz-option" data-correct="true">B. 不是,Python 对大小写敏感</div>
+                            <div class="quiz-option" data-correct="false">C. 只有在 Windows 系统上是同一个</div>
+                            <div class="quiz-option" data-correct="false">D. 取决于 Python 版本</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="5">
+                        <div class="quiz-question"><span class="quiz-num">Q5</span>Python 推荐使用哪种变量命名风格?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="true">A. 下划线命名法 <code>student_name</code></div>
+                            <div class="quiz-option" data-correct="false">B. 连字符命名法 <code>student-name</code></div>
+                            <div class="quiz-option" data-correct="false">C. 大驼峰命名法 <code>StudentName</code></div>
+                            <div class="quiz-option" data-correct="false">D. 全大写命名法 <code>STUDENT_NAME</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="6">
+                        <div class="quiz-question"><span class="quiz-num">Q6</span>下面哪个是 Python 的关键字,不能用作变量名?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>score</code></div>
+                            <div class="quiz-option" data-correct="true">B. <code>for</code></div>
+                            <div class="quiz-option" data-correct="false">C. <code>student</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>total</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-submit-area" id="quizSubmitArea">
+                        <button class="quiz-submit-btn" onclick="submitQuiz()">提交答案</button>
+                        <div class="quiz-hint">请回答全部 6 道题后再提交</div>
+                    </div>
+
+                    <div class="quiz-result" id="quizResult" style="display:none">
+                        <div class="result-score" id="resultScore"></div>
+                        <div class="result-msg" id="resultMsg"></div>
+                        <button class="retry-btn" onclick="resetQuiz()">🔄 重新作答</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="chapter-footer animate-in" style="animation-delay:0.28s">
+                <div class="complete-btn-area">
+                    <button id="markCompleteBtn">标记本节完成</button>
+                </div>
+                <div class="chapter-nav">
+                    <a href="chapter2.html" class="nav-btn prev-btn">
+                        <span class="nav-arrow">←</span>
+                        <span>上一节:字面量与注释</span>
+                    </a>
+                    <a href="chapter2-3.html" class="nav-btn next-btn">
+                        <span>下一节:数据与运算符</span>
+                        <span class="nav-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '已复制 ✓';
+                setTimeout(() => btn.textContent = '复制代码', 2000);
+            });
+        }
+
+        // ===== 测验逻辑 =====
+        let selectedAnswers = {};
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const item = this.closest('.quiz-item');
+                if (item.classList.contains('answered')) return;
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAnswers[item.dataset.question] = this.dataset.correct === 'true';
+                const total = document.querySelectorAll('.quiz-item').length;
+                const done = Object.keys(selectedAnswers).length;
+                const hint = document.querySelector('.quiz-hint');
+                hint.textContent = done >= total ? '全部回答完毕,可以提交了!' : `已回答 ${done} / ${total} 题`;
+                hint.style.color = done >= total ? '#22c55e' : '#94a3b8';
+            });
+        });
+
+        function submitQuiz() {
+            const items = document.querySelectorAll('.quiz-item');
+            if (Object.keys(selectedAnswers).length < items.length) {
+                alert('请先回答所有题目再提交!'); return;
+            }
+            let correct = 0;
+            items.forEach(item => {
+                item.classList.add('answered');
+                const selected = item.querySelector('.quiz-option.selected');
+                const feedback = item.querySelector('.quiz-feedback');
+                const isCorrect = selectedAnswers[item.dataset.question];
+                if (isCorrect) {
+                    selected.classList.add('correct');
+                    feedback.textContent = '✓ 回答正确!';
+                    feedback.className = 'quiz-feedback feedback-correct';
+                    correct++;
+                } else {
+                    selected.classList.add('wrong');
+                    feedback.textContent = '✗ 回答错误,正确答案已标绿';
+                    feedback.className = 'quiz-feedback feedback-wrong';
+                    item.querySelectorAll('.quiz-option').forEach(o => {
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                }
+            });
+            document.getElementById('quizSubmitArea').style.display = 'none';
+            const result = document.getElementById('quizResult');
+            const scoreEl = document.getElementById('resultScore');
+            result.style.display = 'block';
+            scoreEl.textContent = `${correct} / ${items.length}`;
+            scoreEl.style.color = correct === items.length ? '#22c55e' : correct >= 4 ? '#f59e0b' : '#ef4444';
+            document.getElementById('resultMsg').textContent =
+                correct === items.length ? '🎉 全部答对!你已完全掌握变量和标识符的知识,太棒了!' :
+                correct >= 4 ? '👍 答得不错!有个别地方可以再复习一下。' :
+                '💪 没关系,多看几遍内容,理解变量的本质,再来挑战一次!';
+        }
+
+        function resetQuiz() {
+            selectedAnswers = {};
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.classList.remove('answered');
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected','correct','wrong'));
+                const fb = item.querySelector('.quiz-feedback');
+                fb.textContent = ''; fb.className = 'quiz-feedback';
+            });
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizSubmitArea').style.display = 'flex';
+            const hint = document.querySelector('.quiz-hint');
+            hint.textContent = '请回答全部 6 道题后再提交';
+            hint.style.color = '#94a3b8';
+        }
+    </script>
+</body>
+</html>

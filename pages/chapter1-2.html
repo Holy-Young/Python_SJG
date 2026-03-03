@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.2 编程语言与Python解释器 - Python入门课</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/chapter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="nav-logo">
+            <button id="menuToggle" class="menu-toggle">☰</button>
+            <a href="../index.html">🐍 Python 入门课</a>
+        </div>
+        <div class="nav-info">专为初中生设计 · 从零开始学编程</div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar"></aside>
+        <main class="main-content">
+
+            <!-- 面包屑 -->
+            <div class="breadcrumb animate-in">
+                <a href="../index.html">🏠 首页</a>
+                <span class="bc-sep">/</span>
+                <a href="chapter1.html">第一章</a>
+                <span class="bc-sep">/</span>
+                <span class="bc-current">1.2 编程语言与Python解释器</span>
+            </div>
+
+            <!-- Hero -->
+            <div class="chapter-hero animate-in">
+                <div class="chapter-hero-bg">
+                    <div class="ch-circle cc1"></div>
+                    <div class="ch-circle cc2"></div>
+                </div>
+                <div class="chapter-hero-content">
+                    <div class="chapter-hero-left">
+                        <div class="chapter-meta">
+                            <span class="badge badge-beginner">入门</span>
+                            <span class="chapter-num">第一章 · 第 2 节</span>
+                        </div>
+                        <h1>编程语言与<br>Python 解释器</h1>
+                        <p>上节课写出了第一个程序，这节我们来弄清楚它背后的原理——什么是编程语言，Python 解释器又是怎么工作的。</p>
+                    </div>
+                    <div class="chapter-hero-right">
+                        <div class="chapter-info-pill">🗺️ 含思维导图</div>
+                        <div class="chapter-info-pill">❓ 常见问题解答</div>
+                        <div class="chapter-info-pill">🔍 原理深度讲解</div>
+                        <div class="chapter-info-pill">🧠 含互动测验</div>
+                    </div>
+                </div>
+                <div class="chapter-progress">
+                    <div class="progress-label-row">
+                        <span>📊 本章学习进度</span>
+                        <span class="progress-text"></span>
+                    </div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                </div>
+            </div>
+
+            <!-- 思维导图 -->
+            <section class="content-section animate-in" style="animation-delay:0.05s">
+                <div class="section-label">
+                    <span class="section-label-icon">🗺️</span>
+                    <span>本节知识结构</span>
+                </div>
+                <p class="content-p">在开始学习之前，先来看看这一节我们要学哪些内容：</p>
+                <div class="mindmap">
+                    <div class="mindmap-center">第二节<br>Python解释器</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch branch-blue">
+                            <div class="branch-node">① Hello World 问题解答</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">为什么要有引号？</div>
+                                <div class="branch-leaf">大小写能乱写吗？</div>
+                                <div class="branch-leaf">括号能省略吗？</div>
+                                <div class="branch-leaf">中文为什么有时报错？</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-indigo">
+                            <div class="branch-node">② 什么是编程语言</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">机器语言</div>
+                                <div class="branch-leaf">汇编语言</div>
+                                <div class="branch-leaf">高级语言</div>
+                                <div class="branch-leaf">各语言的对比</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-violet">
+                            <div class="branch-node">③ Python 解释器</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">解释器 vs 编译器</div>
+                                <div class="branch-leaf">CPython</div>
+                                <div class="branch-leaf">交互模式与脚本模式</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-green">
+                            <div class="branch-node">④ 代码运行流程</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">源代码 → 字节码</div>
+                                <div class="branch-leaf">字节码 → 机器码</div>
+                                <div class="branch-leaf">整体执行过程</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ① Hello World 常见问题 -->
+            <section class="content-section animate-in" style="animation-delay:0.1s">
+                <div class="section-label">
+                    <span class="section-label-icon">❓</span>
+                    <span>① Hello World 常见问题解答</span>
+                </div>
+                <p class="content-p">上节课写完第一个程序，你可能有很多疑问。我们来逐一解答：</p>
+
+                <!-- FAQ 卡片 -->
+                <div class="faq-list">
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🤔</span>
+                            <span>为什么 "Hello, World!" 要加引号？</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>在 Python 里，<strong>引号里的内容叫做"字符串"</strong>，表示"这是一段文字"。如果不加引号，Python 会以为 Hello 是某个变量名，找不到就报错。</p>
+                            <div class="faq-compare">
+                                <div class="faq-compare-item correct-item">
+                                    <div class="faq-compare-label correct-label">✅ 正确写法</div>
+                                    <code>print("Hello, World!")</code>
+                                </div>
+                                <div class="faq-compare-item error-item">
+                                    <div class="faq-compare-label error-label">❌ 错误写法</div>
+                                    <code>print(Hello, World!)</code>
+                                    <div class="faq-error-msg">NameError: name 'Hello' is not defined</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🔤</span>
+                            <span>print 能不能写成 Print 或 PRINT？</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>不能！</strong>Python 是<strong>大小写敏感</strong>的语言，<code>print</code>、<code>Print</code>、<code>PRINT</code> 是三个完全不同的东西。只有 <code>print</code>（全小写）才是 Python 内置的输出函数。</p>
+                            <div class="faq-compare">
+                                <div class="faq-compare-item correct-item">
+                                    <div class="faq-compare-label correct-label">✅ 正确</div>
+                                    <code>print("你好")</code>
+                                </div>
+                                <div class="faq-compare-item error-item">
+                                    <div class="faq-compare-label error-label">❌ 错误</div>
+                                    <code>Print("你好")</code>
+                                    <div class="faq-error-msg">NameError: name 'Print' is not defined</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🔢</span>
+                            <span>括号是必须的吗？能用中文括号吗？</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>括号是<strong>必须的</strong>，它告诉 Python "这里是在调用一个函数"。并且括号必须是<strong>英文括号 <code>()</code></strong>，中文括号 <code>（）</code> 会导致语法错误。</p>
+                            <div class="tip-box" style="margin-top:12px">
+                                <div class="tip-icon">💡</div>
+                                <div class="tip-text">
+                                    <strong>小技巧</strong>
+                                    <p>在写代码时，把输入法切换到英文模式，所有的符号（括号、引号、逗号）都用英文，可以避免大部分这类错误。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🈳</span>
+                            <span>为什么有时候打印中文会乱码或报错？</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>现代 Python 3 默认使用 <strong>UTF-8 编码</strong>，支持中文，一般不会乱码。但如果你的代码文件保存时选了错误的编码格式（比如 GBK），就可能出问题。</p>
+                            <p>解决方法：在代码文件<strong>第一行</strong>加上这句声明：</p>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <div class="code-header-left">
+                                        <span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span>
+                                        <span class="code-lang">Python</span>
+                                    </div>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                                </div>
+                                <pre><code class="language-python"># -*- coding: utf-8 -*-
+print("你好，世界！")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🔴</span>
+                            <span>看到红色报错信息怎么办？</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>报错信息是 Python 在帮你找 bug，不要怕它！学会读懂报错信息是非常重要的技能。常见错误类型：</p>
+                            <div class="error-table">
+                                <div class="error-row header-row">
+                                    <div>错误类型</div><div>含义</div><div>常见原因</div>
+                                </div>
+                                <div class="error-row">
+                                    <div><code>SyntaxError</code></div>
+                                    <div>语法错误</div>
+                                    <div>括号/引号没闭合，用了中文符号</div>
+                                </div>
+                                <div class="error-row">
+                                    <div><code>NameError</code></div>
+                                    <div>名称错误</div>
+                                    <div>变量/函数名拼错，或大小写不对</div>
+                                </div>
+                                <div class="error-row">
+                                    <div><code>IndentationError</code></div>
+                                    <div>缩进错误</div>
+                                    <div>代码前面的空格数量不对</div>
+                                </div>
+                                <div class="error-row">
+                                    <div><code>TypeError</code></div>
+                                    <div>类型错误</div>
+                                    <div>数据类型用错了，如数字和字符串混用</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ② 什么是编程语言 -->
+            <section class="content-section animate-in" style="animation-delay:0.15s">
+                <div class="section-label">
+                    <span class="section-label-icon">💬</span>
+                    <span>② 什么是编程语言？</span>
+                </div>
+
+                <p class="content-p">你有没有想过，电脑其实只懂 <strong>0 和 1</strong>？所有的程序，最终都要变成一串 0 和 1 才能让 CPU 执行。而编程语言，就是人类和电脑沟通的"翻译工具"。</p>
+
+                <!-- 语言发展时间轴 -->
+                <h3 class="content-h3">编程语言的进化史</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot tl-red">1</div>
+                        <div class="timeline-content">
+                            <div class="timeline-era">第一代 · 1940s</div>
+                            <h4>机器语言</h4>
+                            <p>直接用 0 和 1 写代码，电脑看得懂，但人类几乎不可能直接阅读和书写。</p>
+                            <div class="code-block" style="margin-top:10px">
+                                <div class="code-header">
+                                    <div class="code-header-left">
+                                        <span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span>
+                                        <span class="code-lang">机器语言</span>
+                                    </div>
+                                </div>
+                                <pre><code>10110000 01100001   ← 这是"把 97 存入寄存器"的意思</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-connector"></div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot tl-orange">2</div>
+                        <div class="timeline-content">
+                            <div class="timeline-era">第二代 · 1950s</div>
+                            <h4>汇编语言</h4>
+                            <p>用助记符（英文缩写）代替 0 和 1，稍微人性化一点，但仍然复杂，而且不同 CPU 要写不同的代码。</p>
+                            <div class="code-block" style="margin-top:10px">
+                                <div class="code-header">
+                                    <div class="code-header-left">
+                                        <span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span>
+                                        <span class="code-lang">汇编语言</span>
+                                    </div>
+                                </div>
+                                <pre><code>MOV AL, 61h    ← 同样是"把 97 存入寄存器"</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-connector"></div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot tl-green">3</div>
+                        <div class="timeline-content">
+                            <div class="timeline-era">第三代 · 1960s至今</div>
+                            <h4>高级语言 ← 我们在这里！</h4>
+                            <p>接近人类自然语言，一份代码可以在多种设备上运行。Python、Java、C++ 都属于高级语言。</p>
+                            <div class="code-block" style="margin-top:10px">
+                                <div class="code-header">
+                                    <div class="code-header-left">
+                                        <span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span>
+                                        <span class="code-lang">Python（高级语言）</span>
+                                    </div>
+                                </div>
+                                <pre><code class="language-python">print("Hello!")   ← 简单易懂，人人都能读懂</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 语言对比 -->
+                <h3 class="content-h3">常见编程语言对比</h3>
+                <p class="content-p">世界上有几百种编程语言，各有各的用途。来认识几个常见的：</p>
+                <div class="lang-compare-grid">
+                    <div class="lang-card lang-python">
+                        <div class="lang-card-header">
+                            <span class="lang-emoji">🐍</span>
+                            <span class="lang-name">Python</span>
+                        </div>
+                        <div class="lang-tags">
+                            <span class="lang-tag">AI / 数据</span>
+                            <span class="lang-tag">简单易学</span>
+                        </div>
+                        <p>语法最接近自然语言，入门门槛最低，我们正在学！</p>
+                        <div class="lang-difficulty">
+                            <span>难度：</span>
+                            <span class="difficulty-bar"><span style="width:30%"></span></span>
+                        </div>
+                    </div>
+                    <div class="lang-card lang-java">
+                        <div class="lang-card-header">
+                            <span class="lang-emoji">☕</span>
+                            <span class="lang-name">Java</span>
+                        </div>
+                        <div class="lang-tags">
+                            <span class="lang-tag">Android</span>
+                            <span class="lang-tag">企业开发</span>
+                        </div>
+                        <p>跨平台能力强，Android 开发的主力语言，语法比 Python 复杂一些。</p>
+                        <div class="lang-difficulty">
+                            <span>难度：</span>
+                            <span class="difficulty-bar"><span style="width:55%"></span></span>
+                        </div>
+                    </div>
+                    <div class="lang-card lang-js">
+                        <div class="lang-card-header">
+                            <span class="lang-emoji">🌐</span>
+                            <span class="lang-name">JavaScript</span>
+                        </div>
+                        <div class="lang-tags">
+                            <span class="lang-tag">网页</span>
+                            <span class="lang-tag">前端</span>
+                        </div>
+                        <p>网页上所有的动态效果（弹窗、动画）基本都靠它，是前端开发必学语言。</p>
+                        <div class="lang-difficulty">
+                            <span>难度：</span>
+                            <span class="difficulty-bar"><span style="width:50%"></span></span>
+                        </div>
+                    </div>
+                    <div class="lang-card lang-c">
+                        <div class="lang-card-header">
+                            <span class="lang-emoji">⚙️</span>
+                            <span class="lang-name">C / C++</span>
+                        </div>
+                        <div class="lang-tags">
+                            <span class="lang-tag">游戏引擎</span>
+                            <span class="lang-tag">底层系统</span>
+                        </div>
+                        <p>运行速度最快，游戏引擎和操作系统内核大量使用，但学习难度也最高。</p>
+                        <div class="lang-difficulty">
+                            <span>难度：</span>
+                            <span class="difficulty-bar"><span style="width:85%"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ③ Python 解释器 -->
+            <section class="content-section animate-in" style="animation-delay:0.2s">
+                <div class="section-label">
+                    <span class="section-label-icon">⚙️</span>
+                    <span>③ Python 解释器是什么？</span>
+                </div>
+
+                <p class="content-p">我们写的 Python 代码，电脑并不能直接看懂。需要有一个"翻译官"把代码翻译成电脑能理解的指令——这个翻译官就叫做 <strong>Python 解释器</strong>。</p>
+
+                <!-- 解释器 vs 编译器 -->
+                <h3 class="content-h3">解释器 vs 编译器</h3>
+                <p class="content-p">把代码翻译给电脑有两种方式，就像两种不同的翻译工作：</p>
+
+                <div class="compare-cards">
+                    <div class="compare-card interpreter-card">
+                        <div class="compare-card-header">
+                            <span class="compare-icon">🔄</span>
+                            <span class="compare-title">解释器（Python 用这种）</span>
+                        </div>
+                        <p>像"同声传译"——边读代码边翻译边执行，一行一行来。不需要等全部翻译完，马上就能看到结果。</p>
+                        <div class="compare-flow">
+                            <div class="flow-step">源代码</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">解释器逐行翻译</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">立即执行</div>
+                        </div>
+                        <div class="compare-pros-cons">
+                            <div class="compare-pro">✅ 调试方便，出错马上知道</div>
+                            <div class="compare-pro">✅ 跨平台好，换个系统装解释器就能运行</div>
+                            <div class="compare-con">⚠️ 运行速度相对慢</div>
+                        </div>
+                    </div>
+                    <div class="compare-card compiler-card">
+                        <div class="compare-card-header">
+                            <span class="compare-icon">📦</span>
+                            <span class="compare-title">编译器（C/C++ 用这种）</span>
+                        </div>
+                        <p>像"提前翻译好的书"——先把所有代码一次性翻译成机器码，保存成可执行文件，之后每次直接运行翻译结果。</p>
+                        <div class="compare-flow">
+                            <div class="flow-step">源代码</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">编译器全部翻译</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">生成 .exe 文件</div>
+                        </div>
+                        <div class="compare-pros-cons">
+                            <div class="compare-pro">✅ 运行速度极快</div>
+                            <div class="compare-con">⚠️ 编译时间长，跨平台需要重新编译</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CPython -->
+                <h3 class="content-h3">最常用的解释器：CPython</h3>
+                <div class="info-box">
+                    <div class="info-box-icon">🏆</div>
+                    <div class="info-box-text">
+                        <strong>CPython 是什么？</strong>
+                        <p>CPython 是 Python 官方提供的解释器，用 C 语言编写，也是使用最广泛的版本。我们从官网下载安装的就是 CPython。你在命令行输入 <code>python</code> 启动的，也是它。</p>
+                    </div>
+                </div>
+
+                <!-- 两种运行模式 -->
+                <h3 class="content-h3">Python 的两种运行方式</h3>
+                <div class="run-modes">
+                    <div class="run-mode-card">
+                        <div class="run-mode-header">
+                            <span class="run-mode-icon">💬</span>
+                            <div>
+                                <div class="run-mode-title">交互模式</div>
+                                <div class="run-mode-sub">适合练习和测试</div>
+                            </div>
+                        </div>
+                        <p>打开命令行输入 <code>python</code> 回车，会看到 <code>>>></code> 提示符，输入一行代码马上看到结果。</p>
+                        <div class="code-block" style="margin-top:12px">
+                            <div class="code-header">
+                                <div class="code-header-left">
+                                    <span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span>
+                                    <span class="code-lang">命令行 · 交互模式</span>
+                                </div>
+                            </div>
+                            <pre><code>>>> print("Hello!")
+Hello!
+>>> 1 + 2
+3
+>>> </code></pre>
+                        </div>
+                    </div>
+                    <div class="run-mode-card">
+                        <div class="run-mode-header">
+                            <span class="run-mode-icon">📄</span>
+                            <div>
+                                <div class="run-mode-title">脚本模式</div>
+                                <div class="run-mode-sub">适合写完整程序</div>
+                            </div>
+                        </div>
+                        <p>把代码写进 <code>.py</code> 文件，用命令行运行 <code>python 文件名.py</code>，一次执行所有代码。</p>
+                        <div class="code-block" style="margin-top:12px">
+                            <div class="code-header">
+                                <div class="code-header-left">
+                                    <span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span>
+                                    <span class="code-lang">命令行 · 脚本模式</span>
+                                </div>
+                            </div>
+                            <pre><code>C:\Users\你> python hello.py
+Hello, World!
+你好，Python！</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ④ 一行代码的旅行 -->
+            <section class="content-section animate-in" style="animation-delay:0.22s">
+                <div class="section-label">
+                    <span class="section-label-icon">🚀</span>
+                    <span>④ 一行代码的旅行：从输入到输出</span>
+                </div>
+                <p class="content-p">当你写下 <code>print("Hello!")</code> 并按下回车，到底发生了什么？来看看这行代码的完整旅程：</p>
+
+                <div class="execution-flow">
+                    <div class="exec-step">
+                        <div class="exec-num">1</div>
+                        <div class="exec-icon">📝</div>
+                        <div class="exec-label">你写的源代码</div>
+                        <div class="exec-code"><code>print("Hello!")</code></div>
+                    </div>
+                    <div class="exec-arrow">↓</div>
+                    <div class="exec-step">
+                        <div class="exec-num">2</div>
+                        <div class="exec-icon">🔍</div>
+                        <div class="exec-label">词法 & 语法分析</div>
+                        <div class="exec-desc">解释器先检查代码有没有语法错误，把代码拆分成一个个"词"</div>
+                    </div>
+                    <div class="exec-arrow">↓</div>
+                    <div class="exec-step">
+                        <div class="exec-num">3</div>
+                        <div class="exec-icon">⚡</div>
+                        <div class="exec-label">编译成字节码</div>
+                        <div class="exec-desc">转换为 Python 自己的中间格式（.pyc 文件），速度更快，但仍不是机器码</div>
+                    </div>
+                    <div class="exec-arrow">↓</div>
+                    <div class="exec-step">
+                        <div class="exec-num">4</div>
+                        <div class="exec-icon">🖥️</div>
+                        <div class="exec-label">虚拟机执行</div>
+                        <div class="exec-desc">Python 虚拟机（PVM）读取字节码，翻译成 CPU 能理解的机器指令并执行</div>
+                    </div>
+                    <div class="exec-arrow">↓</div>
+                    <div class="exec-step exec-result">
+                        <div class="exec-num">5</div>
+                        <div class="exec-icon">✨</div>
+                        <div class="exec-label">输出结果</div>
+                        <div class="exec-code"><code>Hello!</code></div>
+                    </div>
+                </div>
+
+                <div class="tip-box" style="margin-top: 24px">
+                    <div class="tip-icon">🎯</div>
+                    <div class="tip-text">
+                        <strong>记住这一点就够了</strong>
+                        <p>你不需要记住整个流程的细节。只需要知道：你写的 Python 代码 → 经过解释器 → 变成电脑能运行的指令。解释器就是中间那个"翻译官"。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 本节小结 -->
+            <section class="content-section animate-in" style="animation-delay:0.26s">
+                <div class="section-label">
+                    <span class="section-label-icon">✅</span>
+                    <span>本节小结</span>
+                </div>
+                <p class="content-p" style="margin-bottom:18px">这节课我们搞清楚了：</p>
+                <div class="summary-list">
+                    <div class="summary-item">
+                        <div class="summary-check">✓</div>
+                        <div>写 Hello World 时：字符串要加引号，<code>print</code> 必须小写，括号必须用英文</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-check">✓</div>
+                        <div>编程语言经历了机器语言 → 汇编语言 → 高级语言的进化，Python 是高级语言</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-check">✓</div>
+                        <div>解释器逐行翻译执行（Python 用），编译器一次性翻译成可执行文件（C/C++ 用）</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-check">✓</div>
+                        <div>Python 代码的执行顺序：源代码 → 字节码 → 虚拟机执行 → 输出结果</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-check">✓</div>
+                        <div>Python 有两种运行方式：交互模式（<code>>>></code>，适合测试）和脚本模式（.py 文件，适合写程序）</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 互动测验 -->
+            <section class="content-section animate-in" style="animation-delay:0.28s">
+                <div class="section-label">
+                    <span class="section-label-icon">🧠</span>
+                    <span>互动测验</span>
+                </div>
+                <p class="content-p">检验一下这节课你学到了什么：</p>
+
+                <div class="quiz-container" id="quizContainer">
+
+                    <div class="quiz-item" data-question="1">
+                        <div class="quiz-question"><span class="quiz-num">Q1</span>下面哪行代码会报错？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>print("Hello")</code></div>
+                            <div class="quiz-option" data-correct="false">B. <code>print('Hello')</code></div>
+                            <div class="quiz-option" data-correct="true">C. <code>Print("Hello")</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>print("你好")</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="2">
+                        <div class="quiz-question"><span class="quiz-num">Q2</span>Python 属于哪一代编程语言？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 第一代：机器语言</div>
+                            <div class="quiz-option" data-correct="false">B. 第二代：汇编语言</div>
+                            <div class="quiz-option" data-correct="true">C. 第三代：高级语言</div>
+                            <div class="quiz-option" data-correct="false">D. 第四代：自然语言</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="3">
+                        <div class="quiz-question"><span class="quiz-num">Q3</span>Python 解释器的工作方式是？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 先把全部代码编译成 .exe 文件，再运行</div>
+                            <div class="quiz-option" data-correct="true">B. 逐行读取代码，边翻译边执行</div>
+                            <div class="quiz-option" data-correct="false">C. 把代码发到云端服务器运行</div>
+                            <div class="quiz-option" data-correct="false">D. 直接把 Python 代码转成机器码</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="4">
+                        <div class="quiz-question"><span class="quiz-num">Q4</span>在命令行看到 <code>>>></code> 提示符，说明 Python 处于什么模式？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 脚本模式</div>
+                            <div class="quiz-option" data-correct="true">B. 交互模式</div>
+                            <div class="quiz-option" data-correct="false">C. 调试模式</div>
+                            <div class="quiz-option" data-correct="false">D. 编译模式</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="5">
+                        <div class="quiz-question"><span class="quiz-num">Q5</span>执行 <code>print(Hello)</code>（没有引号）会出现什么错误？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. SyntaxError（语法错误）</div>
+                            <div class="quiz-option" data-correct="true">B. NameError（名称错误）</div>
+                            <div class="quiz-option" data-correct="false">C. TypeError（类型错误）</div>
+                            <div class="quiz-option" data-correct="false">D. IndentationError（缩进错误）</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-submit-area" id="quizSubmitArea">
+                        <button class="quiz-submit-btn" onclick="submitQuiz()">提交答案</button>
+                        <div class="quiz-hint">请回答全部 5 道题后再提交</div>
+                    </div>
+
+                    <div class="quiz-result" id="quizResult" style="display:none">
+                        <div class="result-score" id="resultScore"></div>
+                        <div class="result-msg" id="resultMsg"></div>
+                        <button class="retry-btn" onclick="resetQuiz()">🔄 重新作答</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 章节底部 -->
+            <div class="chapter-footer animate-in" style="animation-delay:0.32s">
+                <div class="complete-btn-area">
+                    <button id="markCompleteBtn">标记本节完成</button>
+                </div>
+                <div class="chapter-nav">
+                    <a href="chapter1.html" class="nav-btn prev-btn">
+                        <span class="nav-arrow" style="transform:rotate(180deg)">→</span>
+                        <span>上一节：Python 是什么</span>
+                    </a>
+                    <a href="chapter2.html" class="nav-btn next-btn">
+                        <span>下一节：字面量与注释</span>
+                        <span class="nav-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '已复制 ✓';
+                setTimeout(() => btn.textContent = '复制代码', 2000);
+            });
+        }
+
+        // ===== 测验逻辑 =====
+        let selectedAnswers = {};
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const item = this.closest('.quiz-item');
+                if (item.classList.contains('answered')) return;
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAnswers[item.dataset.question] = this.dataset.correct === 'true';
+                const total = document.querySelectorAll('.quiz-item').length;
+                const done = Object.keys(selectedAnswers).length;
+                const hint = document.querySelector('.quiz-hint');
+                hint.textContent = done >= total ? '全部回答完毕，可以提交了！' : `已回答 ${done} / ${total} 题`;
+                hint.style.color = done >= total ? '#22c55e' : '#94a3b8';
+            });
+        });
+
+        function submitQuiz() {
+            const items = document.querySelectorAll('.quiz-item');
+            if (Object.keys(selectedAnswers).length < items.length) {
+                alert('请先回答所有题目再提交！'); return;
+            }
+            let correct = 0;
+            items.forEach(item => {
+                item.classList.add('answered');
+                const selected = item.querySelector('.quiz-option.selected');
+                const feedback = item.querySelector('.quiz-feedback');
+                const isCorrect = selectedAnswers[item.dataset.question];
+                if (isCorrect) {
+                    selected.classList.add('correct');
+                    feedback.textContent = '✓ 回答正确！';
+                    feedback.className = 'quiz-feedback feedback-correct';
+                    correct++;
+                } else {
+                    selected.classList.add('wrong');
+                    feedback.textContent = '✗ 回答错误，正确答案已标绿';
+                    feedback.className = 'quiz-feedback feedback-wrong';
+                    item.querySelectorAll('.quiz-option').forEach(o => {
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                }
+            });
+            document.getElementById('quizSubmitArea').style.display = 'none';
+            const result = document.getElementById('quizResult');
+            const scoreEl = document.getElementById('resultScore');
+            result.style.display = 'block';
+            scoreEl.textContent = `${correct} / ${items.length}`;
+            scoreEl.style.color = correct === items.length ? '#22c55e' : correct >= 3 ? '#f59e0b' : '#ef4444';
+            document.getElementById('resultMsg').textContent =
+                correct === items.length ? '🎉 全部答对！你已完全掌握本节内容，太棒了！' :
+                correct >= 3 ? '👍 答得不错！有几道题可以再复习一下。' :
+                '💪 没关系，多看几遍内容，再来挑战一次！';
+        }
+
+        function resetQuiz() {
+            selectedAnswers = {};
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.classList.remove('answered');
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected', 'correct', 'wrong'));
+                const fb = item.querySelector('.quiz-feedback');
+                fb.textContent = ''; fb.className = 'quiz-feedback';
+            });
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizSubmitArea').style.display = 'flex';
+            const hint = document.querySelector('.quiz-hint');
+            hint.textContent = '请回答全部 5 道题后再提交';
+            hint.style.color = '#94a3b8';
+        }
+    </script>
+</body>
+</html>

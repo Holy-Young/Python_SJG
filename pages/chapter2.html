@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.1 字面量与注释</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/chapter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        /* 表格悬停效果 */
+        .comparison-table tbody tr:hover {
+            background: #eef2ff !important;
+            transform: translateX(2px);
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+        }
+        .comparison-table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .do-dont-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .comparison-table {
+                font-size: 12px;
+            }
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 12px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="nav-logo">
+            <button id="menuToggle" class="menu-toggle">☰</button>
+            <a href="../index.html">🐍 Python 入门课</a>
+        </div>
+        <div class="nav-info">专为初中生设计 · 从零开始学编程</div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar"></aside>
+        <main class="main-content">
+
+            <div class="breadcrumb animate-in">
+                <a href="../index.html">🏠 首页</a>
+                <span class="bc-sep">›</span><span>第二章</span>
+                <span class="bc-sep">›</span>
+                <span class="bc-current">2.1 字面量与注释</span>
+            </div>
+
+            <div class="chapter-hero animate-in">
+                <div class="chapter-hero-bg">
+                    <div class="ch-circle cc1"></div>
+                    <div class="ch-circle cc2"></div>
+                </div>
+                <div class="chapter-hero-content">
+                    <div class="chapter-hero-left">
+                        <div class="chapter-meta">
+                            <span class="badge badge-beginner">入门</span>
+                            <span class="chapter-num">第二章 · 第 1 节</span>
+                        </div>
+                        <h1>字面量与注释</h1>
+                        <p>学习 Python 中的基础数据表示——字面量，以及如何用注释让代码更易读。这是理解变量和数据类型的第一步！</p>
+                    </div>
+                    <div class="chapter-hero-right">
+                        <div class="chapter-info-pill">🗺️ 含思维导图</div>
+                        <div class="chapter-info-pill">🎬 含视频讲解</div>
+                        <div class="chapter-info-pill">💻 含代码示例</div>
+                        <div class="chapter-info-pill">🧠 含互动测验</div>
+                    </div>
+                </div>
+                <div class="chapter-progress">
+                    <div class="progress-label-row">
+                        <span>📊 本章学习进度</span>
+                        <span class="progress-text"></span>
+                    </div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                </div>
+            </div>
+
+            <!-- 思维导图 -->
+            <section class="content-section animate-in" style="animation-delay:0.05s">
+                <div class="section-label">
+                    <span class="section-label-icon">🗺️</span>
+                    <span>本节知识结构</span>
+                </div>
+                <p class="content-p">在开始学习之前，先来看看这一节我们要学哪些内容：</p>
+                <div class="mindmap">
+                    <div class="mindmap-center">第一节<br>字面量与注释</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch branch-blue">
+                            <div class="branch-node">① 字面量的概念</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">什么是字面量</div>
+                                <div class="branch-leaf">为什么需要字面量</div>
+                                <div class="branch-leaf">字面量的作用</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-indigo">
+                            <div class="branch-node">② 字面量的类型</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">数字类型</div>
+                                <div class="branch-leaf">字符串类型</div>
+                                <div class="branch-leaf">布尔类型</div>
+                                <div class="branch-leaf">特殊类型</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-violet">
+                            <div class="branch-node">③ 注释的概念</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">什么是注释</div>
+                                <div class="branch-leaf">注释的作用</div>
+                                <div class="branch-leaf">注释的原则</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-green">
+                            <div class="branch-node">④ 注释的类型</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">单行注释</div>
+                                <div class="branch-leaf">多行注释</div>
+                                <div class="branch-leaf">注释的技巧</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 视频 -->
+            <section class="content-section animate-in" style="animation-delay:0.1s">
+                <div class="section-label">
+                    <span class="section-label-icon">🎬</span>
+                    <span>视频讲解</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1qW4y1a7fU&autoplay=0"
+                        scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+                </div>
+                <div class="video-tip">
+                    <span>💡</span><span>建议先看完视频，再阅读下方的图文讲解，效果更好</span>
+                </div>
+            </section>
+
+            <!-- 什么是字面量 -->
+            <section class="content-section animate-in" style="animation-delay:0.12s">
+                <div class="section-label">
+                    <span class="section-label-icon">📝</span>
+                    <span>① 什么是字面量？</span>
+                </div>
+                <p class="content-p">在 Python 中，<strong>字面量（Literal）</strong>指的是在代码中直接写出来的<strong>固定值</strong>。你可以把它理解成"所见即所得"的数据——你写的是什么，它就是什么。</p>
+                
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>举个生活中的例子</strong>
+                        <p>假如你在作文本上写下"100"这个数字，那么这个 100 就是一个字面量——它本身就是 100，不代表别的意思。但如果你说"我的分数"，这就不是字面量，因为它不是一个固定的值，可能是 90 分，也可能是 95 分。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">为什么要用字面量？</h3>
+                <p class="content-p">字面量是编程的基础。在写程序时，我们经常需要用到一些确定的值，比如：</p>
+                <div class="pros-cons-grid">
+                    <div class="pro-item">
+                        <div class="pro-icon">🔢</div>
+                        <div><strong>数学计算</strong><p>计算 1 + 1，这里的 1 就是数字字面量</p></div>
+                    </div>
+                    <div class="pro-item">
+                        <div class="pro-icon">💬</div>
+                        <div><strong>文本输出</strong><p>打印"你好"，这里的"你好"就是字符串字面量</p></div>
+                    </div>
+                    <div class="pro-item">
+                        <div class="pro-icon">✅</div>
+                        <div><strong>逻辑判断</strong><p>判断条件是否为真，True/False 就是布尔字面量</p></div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-dot red"></span>
+                            <span class="code-dot yellow"></span>
+                            <span class="code-dot green"></span>
+                            <span class="code-lang">Python</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 这里直接写出来的值都是字面量
+print(100)           # 100 是整数字面量
+print(3.14)          # 3.14 是浮点数字面量
+print("你好")        # "你好" 是字符串字面量
+print(True)          # True 是布尔字面量</code></pre>
+                </div>
+            </section>
+
+            <!-- 字面量的类型 -->
+            <section class="content-section animate-in" style="animation-delay:0.14s">
+                <div class="section-label">
+                    <span class="section-label-icon">🎨</span>
+                    <span>② 字面量的类型</span>
+                </div>
+                <p class="content-p">Python 中有多种类型的字面量，我们来一一认识它们：</p>
+
+                <h3 class="content-h3">1️⃣ 数字类型字面量</h3>
+                <p class="content-p">数字类型的字面量分为<strong>整数</strong>和<strong>浮点数</strong>（小数）：</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 整数字面量（没有小数点）
+print(10)        # 正整数
+print(-5)        # 负整数
+print(0)         # 零
+
+# 浮点数字面量（有小数点）
+print(3.14)      # 正小数
+print(-2.5)      # 负小数
+print(0.0)       # 零的小数形式
+
+# 科学计数法（对于很大或很小的数）
+print(1.5e3)     # 1.5×10³ = 1500
+print(2e-4)      # 2×10⁻⁴ = 0.0002</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-icon">⚠️</div>
+                    <div class="tip-text">
+                        <strong>注意</strong>
+                        <p>在 Python 中写数字时不能加逗号分隔符。比如一百万要写成 <code>1000000</code> 或 <code>1_000_000</code>（用下划线分隔更清晰），不能写成 <code>1,000,000</code>。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">2️⃣ 字符串类型字面量</h3>
+                <p class="content-p">字符串就是一串文字，用<strong>引号</strong>包裹起来。可以用单引号 <code>'</code> 或双引号 <code>"</code>，效果一样：</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 单引号字符串
+print('Hello')
+print('我爱Python')
+
+# 双引号字符串（和单引号效果一样）
+print("Hello")
+print("我爱Python")
+
+# 三引号字符串（可以换行）
+print("""这是第一行
+这是第二行
+这是第三行""")
+
+# 空字符串
+print("")         # 空字符串（什么也不输出）</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">🤔</div>
+                    <div class="info-box-text">
+                        <strong>单引号还是双引号？</strong>
+                        <p>在 Python 中，单引号和双引号没有区别。但如果字符串里本身包含引号，可以用另一种引号包裹：<code>'他说："你好"'</code> 或者 <code>"I'm happy"</code>。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">3️⃣ 布尔类型字面量</h3>
+                <p class="content-p">布尔类型只有两个值：<code>True</code>（真）和 <code>False</code>（假），用来表示"是"或"否"：</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 布尔字面量（注意首字母大写）
+print(True)       # 真
+print(False)      # 假
+
+# 布尔值常用于判断
+is_student = True
+is_teacher = False
+
+# 比较运算的结果也是布尔值
+print(5 > 3)      # True
+print(10 == 8)    # False</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-icon">⚠️</div>
+                    <div class="tip-text">
+                        <strong>重要提示</strong>
+                        <p>Python 中的布尔值 <code>True</code> 和 <code>False</code> 首字母必须大写！<code>true</code> 或 <code>false</code>（小写）会报错。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">4️⃣ 特殊类型字面量</h3>
+                <p class="content-p">还有一个特殊的字面量 <code>None</code>，表示"什么都没有"或"空值"：</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># None 表示空值
+result = None     # 初始化一个变量为空
+print(None)       # 输出：None
+
+# None 常用于表示"还没有值"
+name = None       # 名字还没确定
+age = None        # 年龄还没确定</code></pre>
+                </div>
+            </section>
+
+            <!-- 字面量类型总结表格 -->
+            <section class="content-section animate-in" style="animation-delay:0.16s">
+                <div class="section-label">
+                    <span class="section-label-icon">📊</span>
+                    <span>字面量类型总结</span>
+                </div>
+                <div class="comparison-table" style="overflow-x: auto; margin-top: 8px;">
+                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        <thead>
+                            <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <th style="padding: 16px; text-align: left; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); width: 15%;">类型</th>
+                                <th style="padding: 16px; text-align: left; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); width: 25%;">说明</th>
+                                <th style="padding: 16px; text-align: left; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); width: 30%;">示例</th>
+                                <th style="padding: 16px; text-align: left; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); width: 30%;">用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #fafbff; transition: background 0.2s;">
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; font-weight: 600; color: #2d3748;">整数</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">没有小数点的数字</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0;"><code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #e11d48; font-size: 13px;">10</code>, <code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #e11d48; font-size: 13px;">-5</code>, <code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #e11d48; font-size: 13px;">0</code></td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">计数、索引、数学运算</td>
+                            </tr>
+                            <tr style="background: white; transition: background 0.2s;">
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; font-weight: 600; color: #2d3748;">浮点数</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">带小数点的数字</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0;"><code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #e11d48; font-size: 13px;">3.14</code>, <code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #e11d48; font-size: 13px;">-2.5</code>, <code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #e11d48; font-size: 13px;">0.0</code></td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">精确计算、科学计算</td>
+                            </tr>
+                            <tr style="background: #fafbff; transition: background 0.2s;">
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; font-weight: 600; color: #2d3748;">字符串</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">用引号包裹的文本</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0;"><code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #0891b2; font-size: 13px;">"你好"</code>, <code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #0891b2; font-size: 13px;">'Python'</code></td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">显示文字、存储信息</td>
+                            </tr>
+                            <tr style="background: white; transition: background 0.2s;">
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; font-weight: 600; color: #2d3748;">布尔</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">真或假</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0;"><code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #7c3aed; font-size: 13px;">True</code>, <code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #7c3aed; font-size: 13px;">False</code></td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">判断、条件、开关</td>
+                            </tr>
+                            <tr style="background: #fafbff; transition: background 0.2s;">
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; font-weight: 600; color: #2d3748;">None</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">空值</td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0;"><code style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; color: #64748b; font-size: 13px;">None</code></td>
+                                <td style="padding: 14px 16px; border: 1px solid #e2e8f0; color: #4a5568;">表示"没有值"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 什么是注释 -->
+            <section class="content-section animate-in" style="animation-delay:0.18s">
+                <div class="section-label">
+                    <span class="section-label-icon">💬</span>
+                    <span>③ 什么是注释？</span>
+                </div>
+                <p class="content-p"><strong>注释（Comment）</strong>是写在代码中的说明文字，专门给人看的，Python 解释器在运行时会<strong>完全忽略</strong>注释内容。</p>
+                
+                <div class="info-box">
+                    <div class="info-box-icon">🌟</div>
+                    <div class="info-box-text">
+                        <strong>为什么需要注释？</strong>
+                        <p>想象一下，你写了一段复杂的代码，过了几个月后再看，可能连自己都看不懂了！注释就像是给代码写的"备忘录"，帮助你（和其他人）理解代码的意图和逻辑。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">注释的作用 ✨</h3>
+                <div class="pros-cons-grid">
+                    <div class="pro-item">
+                        <div class="pro-icon">📖</div>
+                        <div><strong>解释代码</strong><p>说明某段代码的作用和原理</p></div>
+                    </div>
+                    <div class="pro-item">
+                        <div class="pro-icon">🔍</div>
+                        <div><strong>标记重点</strong><p>提醒自己或他人注意某些关键部分</p></div>
+                    </div>
+                    <div class="pro-item">
+                        <div class="pro-icon">🚫</div>
+                        <div><strong>临时禁用代码</strong><p>测试时暂时"关闭"某些代码而不删除</p></div>
+                    </div>
+                    <div class="pro-item">
+                        <div class="pro-icon">📝</div>
+                        <div><strong>记录思路</strong><p>写下解决问题的思路和想法</p></div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 这是一条注释，Python 不会执行它
+print("Hello")  # 这条注释在代码后面
+
+# 下面的代码被注释掉了，不会运行
+# print("这句话不会输出")</code></pre>
+                </div>
+            </section>
+
+            <!-- 注释的类型 -->
+            <section class="content-section animate-in" style="animation-delay:0.2s">
+                <div class="section-label">
+                    <span class="section-label-icon">🎯</span>
+                    <span>④ 注释的类型</span>
+                </div>
+
+                <h3 class="content-h3">1️⃣ 单行注释</h3>
+                <p class="content-p">单行注释以 <code>#</code> 号开头，从 <code>#</code> 到行尾的所有内容都是注释：</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 这是一条单行注释
+print("Hello, World!")
+
+# 计算两个数的和
+a = 10
+b = 20
+sum = a + b  # 这里也可以写注释
+
+# 下面这行代码被注释掉了，不会运行
+# print("这句话不会输出")</code></pre>
+                </div>
+
+                <h3 class="content-h3">2️⃣ 多行注释</h3>
+                <p class="content-p">如果要写很长的注释，每行都加 <code>#</code> 会很麻烦。Python 提供了两种方式写多行注释：</p>
+                
+                <h4 class="content-h4">方法一：连续使用多个单行注释</h4>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 这是第一行注释
+# 这是第二行注释
+# 这是第三行注释
+print("程序开始运行")</code></pre>
+                </div>
+
+                <h4 class="content-h4">方法二：使用三引号（推荐）</h4>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">"""
+这是多行注释
+可以写很多行
+Python 会忽略这些内容
+"""
+print("程序开始运行")
+
+'''
+单引号的三引号也可以
+效果是一样的
+'''
+print("继续执行")</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>提示</strong>
+                        <p>三引号 <code>"""</code> 或 <code>'''</code> 虽然常用来写多行注释，但严格来说它们是<strong>多行字符串</strong>。如果没有被赋值给变量，Python 会忽略它们，所以可以当作注释使用。</p>
+                    </div>
+                </div>
+                    
+                <!-- 注释的最佳实践 -->
+                <h3 class="content-h3">📌 注释的最佳实践</h3>
+                <p class="content-p">写好注释是一门艺术，下面是一些建议：</p>
+
+                <div class="do-dont-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;">
+                    <div class="do-block" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #86efac; border-radius: 16px; padding: 20px;">
+                        <h4 style="font-size: 16px; font-weight: 700; color: #166534; margin: 0 0 14px 0; display: flex; align-items: center; gap: 8px;">✅ 应该做的</h4>
+                        <ul style="margin: 0; padding-left: 20px; color: #166534; font-size: 14px; line-height: 1.8;">
+                            <li>注释要简洁明了，一针见血</li>
+                            <li>解释<strong>为什么</strong>这样写，而不是<strong>怎么</strong>写的</li>
+                            <li>复杂的逻辑、算法一定要写注释</li>
+                            <li>对于不常见的技巧或解决方案要说明</li>
+                        </ul>
+                    </div>
+                    <div class="dont-block" style="background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fca5a5; border-radius: 16px; padding: 20px;">
+                        <h4 style="font-size: 16px; font-weight: 700; color: #991b1b; margin: 0 0 14px 0; display: flex; align-items: center; gap: 8px;">❌ 不应该做的</h4>
+                        <ul style="margin: 0; padding-left: 20px; color: #991b1b; font-size: 14px; line-height: 1.8;">
+                            <li>不要写显而易见的注释（如：<code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px; font-size: 13px;"># 这是一个变量</code>）</li>
+                            <li>不要写过时的注释（代码改了，注释忘了更新）</li>
+                            <li>不要用注释来隐藏烂代码（应该重构代码）</li>
+                            <li>不要写太长的注释（会影响代码阅读）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># ❌ 坏注释：太显而易见了
+x = 10  # 把 10 赋值给 x
+
+# ✅ 好注释：解释了为什么
+x = 10  # 班级最多容纳 10 个学生
+
+# ❌ 坏注释：没用的信息
+# 这是一个 for 循环
+for i in range(5):
+    print(i)
+
+# ✅ 好注释：解释了目的
+# 遍历所有学生，打印他们的序号
+for i in range(5):
+    print(i)</code></pre>
+                </div>
+            </section>
+
+            
+            <!-- 综合示例 -->
+            <section class="content-section animate-in" style="animation-delay:0.24s">
+                <div class="section-label">
+                    <span class="section-label-icon">🎨</span>
+                    <span>综合示例</span>
+                </div>
+                <p class="content-p">下面是一个综合运用<strong>字面量</strong>和<strong>注释</strong>的例子：</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-lang">Python</span></div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">"""
+学生信息管理程序
+作者：小明
+日期：2024-01-15
+"""
+
+# 学生基本信息（使用不同类型的字面量）
+name = "张三"           # 字符串字面量
+age = 14                # 整数字面量
+height = 1.65           # 浮点数字面量
+is_monitor = True       # 布尔字面量
+phone = None            # None 字面量（电话号码待填写）
+
+# 输出学生信息
+print("===== 学生信息 =====")
+print("姓名:", name)
+print("年龄:", age, "岁")
+print("身高:", height, "米")
+print("是否是班长:", is_monitor)
+
+# 计算 5 年后的年龄
+future_age = age + 5
+print(f"{name} 五年后的年龄是 {future_age} 岁")
+
+# 下面的功能还在开发中，暂时注释掉
+# print("电话号码:", phone)
+# send_message(phone)</code></pre>
+                </div>
+
+                <div class="output-block">
+                    <div class="output-header">
+                        <span class="output-dot"></span>
+                        运行结果
+                    </div>
+                    <pre class="output-content">===== 学生信息 =====
+姓名: 张三
+年龄: 14 岁
+身高: 1.65 米
+是否是班长: True
+张三 五年后的年龄是 19 岁
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 本节小结 -->
+            <section class="content-section animate-in" style="animation-delay:0.24s">
+                <div class="section-label">
+                    <span class="section-label-icon">✅</span>
+                    <span>本节小结</span>
+                </div>
+                <p class="content-p" style="margin-bottom:18px">学完这一节，你已经掌握了：</p>
+                <div class="summary-list">
+                    <div class="summary-item"><div class="summary-check">✓</div><div><strong>字面量</strong>是代码中直接写出的固定值，"所见即所得"</div></div>
+                    <div class="summary-item"><div class="summary-check">✓</div><div>五种字面量类型：<strong>整数、浮点数、字符串、布尔、None</strong></div></div>
+                    <div class="summary-item"><div class="summary-check">✓</div><div>字符串用引号包裹，单引号 <code>'</code> 和双引号 <code>"</code> 效果相同</div></div>
+                    <div class="summary-item"><div class="summary-check">✓</div><div>布尔值只有 <code>True</code> 和 <code>False</code>，首字母必须大写</div></div>
+                    <div class="summary-item"><div class="summary-check">✓</div><div><strong>注释</strong>用 <code>#</code> 或 <code>"""</code>，Python 会忽略它们</div></div>
+                    <div class="summary-item"><div class="summary-check">✓</div><div>好的注释解释"为什么"，而不仅仅是"是什么"</div></div>
+                </div>
+            </section>
+
+            <!-- 互动测验 -->
+            <section class="content-section animate-in" style="animation-delay:0.26s">
+                <div class="section-label">
+                    <span class="section-label-icon">🧠</span>
+                    <span>互动测验</span>
+                </div>
+                <p class="content-p">做几道题测试一下你的学习效果吧！</p>
+
+                <div class="quiz-container">
+                    <div class="quiz-item" data-question="1">
+                        <div class="quiz-question"><span class="quiz-num">Q1</span>下面哪个是字符串字面量？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>123</code></div>
+                            <div class="quiz-option" data-correct="true">B. <code>"123"</code></div>
+                            <div class="quiz-option" data-correct="false">C. <code>True</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>None</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="2">
+                        <div class="quiz-question"><span class="quiz-num">Q2</span>Python 中单行注释使用什么符号？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>//</code></div>
+                            <div class="quiz-option" data-correct="false">B. <code>/* */</code></div>
+                            <div class="quiz-option" data-correct="true">C. <code>#</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>--</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="3">
+                        <div class="quiz-question"><span class="quiz-num">Q3</span>下面哪个是整数字面量？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>3.14</code></div>
+                            <div class="quiz-option" data-correct="true">B. <code>100</code></div>
+                            <div class="quiz-option" data-correct="false">C. <code>"100"</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>True</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="4">
+                        <div class="quiz-question"><span class="quiz-num">Q4</span>Python 中的布尔字面量必须怎么写？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. 全部小写（true, false）</div>
+                            <div class="quiz-option" data-correct="true">B. 首字母大写（True, False）</div>
+                            <div class="quiz-option" data-correct="false">C. 全部大写（TRUE, FALSE）</div>
+                            <div class="quiz-option" data-correct="false">D. 随意，大小写都可以</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="5">
+                        <div class="quiz-question"><span class="quiz-num">Q5</span>下面哪种方式可以用来写多行注释？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">A. <code>// 多行注释 //</code></div>
+                            <div class="quiz-option" data-correct="false">B. <code>/* 多行注释 */</code></div>
+                            <div class="quiz-option" data-correct="true">C. <code>""" 多行注释 """</code></div>
+                            <div class="quiz-option" data-correct="false">D. <code>&lt;!-- 多行注释 --&gt;</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-submit-area" id="quizSubmitArea">
+                        <button class="quiz-submit-btn" onclick="submitQuiz()">提交答案</button>
+                        <div class="quiz-hint">请回答全部 5 道题后再提交</div>
+                    </div>
+
+                    <div class="quiz-result" id="quizResult" style="display:none">
+                        <div class="result-score" id="resultScore"></div>
+                        <div class="result-msg" id="resultMsg"></div>
+                        <button class="retry-btn" onclick="resetQuiz()">🔄 重新作答</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="chapter-footer animate-in" style="animation-delay:0.3s">
+                <div class="complete-btn-area">
+                    <button id="markCompleteBtn">标记本节完成</button>
+                </div>
+                <div class="chapter-nav">
+                    <a href="chapter1-2.html" class="nav-btn prev-btn">
+                        <span class="nav-arrow">←</span>
+                        <span>上一节：编程语言与Python解释器</span>
+                    </a>
+                    <a href="chapter2-2.html" class="nav-btn next-btn">
+                        <span>下一节：变量与标识符</span>
+                        <span class="nav-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '已复制 ✓';
+                setTimeout(() => btn.textContent = '复制代码', 2000);
+            });
+        }
+
+        // ===== 测验逻辑 =====
+        let selectedAnswers = {};
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const item = this.closest('.quiz-item');
+                if (item.classList.contains('answered')) return;
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAnswers[item.dataset.question] = this.dataset.correct === 'true';
+                const total = document.querySelectorAll('.quiz-item').length;
+                const done = Object.keys(selectedAnswers).length;
+                const hint = document.querySelector('.quiz-hint');
+                hint.textContent = done >= total ? '全部回答完毕，可以提交了！' : `已回答 ${done} / ${total} 题`;
+                hint.style.color = done >= total ? '#22c55e' : '#94a3b8';
+            });
+        });
+
+        function submitQuiz() {
+            const items = document.querySelectorAll('.quiz-item');
+            if (Object.keys(selectedAnswers).length < items.length) {
+                alert('请先回答所有题目再提交！'); return;
+            }
+            let correct = 0;
+            items.forEach(item => {
+                item.classList.add('answered');
+                const selected = item.querySelector('.quiz-option.selected');
+                const feedback = item.querySelector('.quiz-feedback');
+                const isCorrect = selectedAnswers[item.dataset.question];
+                if (isCorrect) {
+                    selected.classList.add('correct');
+                    feedback.textContent = '✓ 回答正确！';
+                    feedback.className = 'quiz-feedback feedback-correct';
+                    correct++;
+                } else {
+                    selected.classList.add('wrong');
+                    feedback.textContent = '✗ 回答错误，正确答案已标绿';
+                    feedback.className = 'quiz-feedback feedback-wrong';
+                    item.querySelectorAll('.quiz-option').forEach(o => {
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                }
+            });
+            document.getElementById('quizSubmitArea').style.display = 'none';
+            const result = document.getElementById('quizResult');
+            const scoreEl = document.getElementById('resultScore');
+            result.style.display = 'block';
+            scoreEl.textContent = `${correct} / ${items.length}`;
+            scoreEl.style.color = correct === items.length ? '#22c55e' : correct >= 3 ? '#f59e0b' : '#ef4444';
+            document.getElementById('resultMsg').textContent =
+                correct === items.length ? '🎉 全部答对！你已完全掌握本节内容，太棒了！' :
+                correct >= 3 ? '👍 答得不错！有几道题可以再复习一下。' :
+                '💪 没关系，多看几遍内容，再来挑战一次！';
+        }
+
+        function resetQuiz() {
+            selectedAnswers = {};
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.classList.remove('answered');
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected','correct','wrong'));
+                const fb = item.querySelector('.quiz-feedback');
+                fb.textContent = ''; fb.className = 'quiz-feedback';
+            });
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizSubmitArea').style.display = 'flex';
+            const hint = document.querySelector('.quiz-hint');
+            hint.textContent = '请回答全部 5 道题后再提交';
+            hint.style.color = '#94a3b8';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 零基础入门 - 初中生专属</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- 顶部导航栏 -->
+    <header class="top-nav">
+        <div class="nav-logo">
+            <img src="images/logo.png" alt="Logo" class="nav-logo-img">
+            <span class="logo-snake">🐍</span>
+            <span>Python 入门课</span>
+        </div>
+        <div class="nav-right">
+            <div class="nav-info">专为初中生设计 · 从零开始学编程</div>
+            <a href="pages/chapter1.html" class="nav-cta">开始学习</a>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- 左侧目录 -->
+        <aside class="sidebar"></aside>
+
+        <!-- 右侧内容区 -->
+        <main class="main-content">
+
+            <!-- Hero 区域 -->
+            <div class="hero-box animate-in">
+                <!-- 背景装饰 -->
+                <div class="hero-bg-circles">
+                    <div class="bg-circle c1"></div>
+                    <div class="bg-circle c2"></div>
+                    <div class="bg-circle c3"></div>
+                </div>
+
+                <div class="hero-text">
+                    <div class="hero-tag">✨ 零基础也能学会</div>
+                    <h1>用 Python<br><span class="hero-highlight">解锁编程世界</span></h1>
+                    <p>专为初中生设计的编程入门课程，不需要任何基础，跟着课程一步一步来，你一定能学会！</p>
+                    <div class="hero-actions">
+                        <a href="pages/chapter1.html" class="start-btn">立即开始学习 →</a>
+                        <a href="#roadmap" class="outline-btn">查看课程 ↓</a>
+                    </div>
+                </div>
+
+                <div class="hero-code">
+    <div class="fake-code-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="code-filename">main.py</span>
+    </div>
+    <div class="code-body">
+        <div class="code-line-nums">
+            <span>1</span><span>2</span><span>3</span>
+            <span>4</span><span>5</span><span>6</span>
+            <span>7</span><span>8</span><span>9</span>
+            <span>10</span><span>11</span>
+        </div>
+        <pre class="fake-code"><span class="fc-comment"># 我的第一个程序</span>
+<span class="fc-keyword">print</span>(<span class="fc-string">"Hello, World!"</span>)
+
+name = <span class="fc-string">"同学"</span>
+<span class="fc-keyword">print</span>(<span class="fc-string">f"你好, {name}!"</span>)
+
+<span class="fc-comment"># 计算 1 到 10 的和</span>
+total = <span class="fc-number">0</span>
+<span class="fc-keyword">for</span> i <span class="fc-keyword">in</span> <span class="fc-keyword">range</span>(<span class="fc-number">1</span>, <span class="fc-number">11</span>):
+    total += i
+<span class="fc-keyword">print</span>(<span class="fc-string">f"总和是: {total}"</span>)</pre>
+    </div>
+    <div class="code-output">
+        <span class="output-label">▶ 输出</span>
+        <span class="output-text">Hello, World! · 总和是: 55</span>
+    </div>
+</div>
+            </div>
+
+            <!-- 统计数字 -->
+            <div class="stats-row animate-in" style="animation-delay: 0.1s">
+                <div class="stat-item">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-num" id="statChapters">-</div>
+                    <div class="stat-label">个章节</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-num" id="statLessons">-</div>
+                    <div class="stat-label">节课程</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🚀</div>
+                    <div class="stat-num">0</div>
+                    <div class="stat-label">基础要求</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">✨</div>
+                    <div class="stat-num">∞</div>
+                    <div class="stat-label">可能性</div>
+                </div>
+            </div>
+
+            <!-- 课程特点卡片 -->
+            <div class="section-header animate-in" style="animation-delay: 0.2s">
+                <div class="section-tag">WHY US</div>
+                <h2 class="section-title">为什么选择这门课？</h2>
+                <p class="section-desc">我们把复杂的编程概念变得简单有趣</p>
+            </div>
+
+            <div class="card-grid animate-in" style="animation-delay: 0.25s">
+                <div class="card card-blue">
+                    <div class="card-glow"></div>
+                    <div class="card-icon">🎬</div>
+                    <h3>视频讲解</h3>
+                    <p>每节配有完整视频，跟着老师一步步操作，看不懂可以反复回看</p>
+                    <div class="card-arrow">→</div>
+                </div>
+                <div class="card card-purple">
+                    <div class="card-glow"></div>
+                    <div class="card-icon">📈</div>
+                    <h3>难度递增</h3>
+                    <p>从最简单的概念开始，循序渐进，不跳步，不让你感到迷茫</p>
+                    <div class="card-arrow">→</div>
+                </div>
+                <div class="card card-green">
+                    <div class="card-glow"></div>
+                    <div class="card-icon">💻</div>
+                    <h3>代码实践</h3>
+                    <p>每节都有高亮示例代码和运行结果，边学边练，学以致用</p>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- 学习轨迹横幅 -->
+            <div class="journey-banner animate-in" style="animation-delay:0.28s">
+                <div class="journey-text">
+                    <div class="journey-tag">学习轨迹</div>
+                    <h3>从第一行代码到独立写程序</h3>
+                    <p>跟着路线图，一步一步打好基础</p>
+                </div>
+                <div class="journey-steps">
+                    <div class="j-step active">安装环境</div>
+                    <div class="j-arrow">→</div>
+                    <div class="j-step">学变量</div>
+                    <div class="j-arrow">→</div>
+                    <div class="j-step">写逻辑</div>
+                    <div class="j-arrow">→</div>
+                    <div class="j-step">封装函数</div>
+                    <div class="j-arrow">→</div>
+                    <div class="j-step highlight">独立开发 🎉</div>
+                </div>
+            </div>
+
+            <!-- 章节路线图 -->
+            <div class="section-header animate-in" style="animation-delay: 0.3s" id="roadmap">
+                <div class="section-tag">ROADMAP</div>
+                <h2 class="section-title">课程路线图</h2>
+                <p class="section-desc">共 4 个章节，循序渐进带你入门</p>
+            </div>
+
+            <div class="roadmap animate-in" style="animation-delay: 0.35s">
+
+                <div class="roadmap-item">
+                    <div class="roadmap-left">
+                        <div class="roadmap-dot dot-blue">1</div>
+                        <div class="roadmap-connector"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-meta">
+                            <span class="badge badge-beginner">入门</span>
+                            <span class="roadmap-count" id="r-count-0"></span>
+                        </div>
+                        <h3>认识 Python</h3>
+                        <p>了解 Python 是什么，安装环境，写出第一行代码</p>
+                        <div class="roadmap-tags">
+                            <span>print()</span><span>解释器</span><span>运行程序</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-left">
+                        <div class="roadmap-dot dot-indigo">2</div>
+                        <div class="roadmap-connector"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-meta">
+                            <span class="badge badge-beginner">入门</span>
+                            <span class="roadmap-count" id="r-count-1"></span>
+                        </div>
+                        <h3>数据与变量</h3>
+                        <p>学习字面量、变量、数据类型</p>
+                        <div class="roadmap-tags">
+                            <span>变量</span><span>字符串</span><span>列表</span><span>字典</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-left">
+                        <div class="roadmap-dot dot-violet">3</div>
+                        <div class="roadmap-connector"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-meta">
+                            <span class="badge badge-intermediate">进阶</span>
+                            <span class="roadmap-count" id="r-count-2"></span>
+                        </div>
+                        <h3>条件与循环</h3>
+                        <p>让程序学会判断和重复执行，写出有逻辑的代码</p>
+                        <div class="roadmap-tags">
+                            <span>if/else</span><span>for</span><span>while</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-left">
+                        <div class="roadmap-dot dot-purple">4</div>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-meta">
+                            <span class="badge badge-intermediate">进阶</span>
+                            <span class="roadmap-count" id="r-count-3"></span>
+                        </div>
+                        <h3>函数</h3>
+                        <p>把代码封装成函数，写出可以复用的程序</p>
+                        <div class="roadmap-tags">
+                            <span>def</span><span>参数</span><span>return</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 底部 CTA -->
+            <div class="cta-banner animate-in" style="animation-delay:0.4s">
+                <div class="cta-left">
+                    <h3>准备好了吗？</h3>
+                    <p>马上开始你的第一节课，只需要 10 分钟 🎉</p>
+                </div>
+                <a href="pages/chapter1.html" class="cta-btn">开始第一课 →</a>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 路线图节数自动填充
+        document.addEventListener("DOMContentLoaded", () => {
+            COURSE_CONFIG.chapters.forEach((ch, i) => {
+                const el = document.getElementById(`r-count-${i}`);
+                if (el) el.textContent = `共 ${ch.lessons.length} 节`;
+            });
+        });
+    </script>
+</body>
+
+</html>
