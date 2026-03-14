@@ -1052,6 +1052,94 @@ while i <= 9:           # 外层：被乘数 1~9
                 </div>
             </section>
 
+            <!-- 本节要点 -->
+            <section class="content-section animate-in" style="animation-delay:.45s">
+                <div class="section-label">
+                    <div class="section-label-icon">📌</div>
+                    <span>本节要点</span>
+                </div>
+                <p class="content-p">学完这一节，你应该掌握以下几个核心知识点，来对照检查一下吧：</p>
+
+                <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+
+                    <!-- 要点 1 -->
+                    <div style="display:flex;gap:16px;align-items:flex-start;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:14px;padding:16px 20px;">
+                        <div style="background:linear-gradient(135deg,#2563eb,#4f46e5);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">1</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#1d4ed8;margin-bottom:5px;">while 循环的作用：让程序"重复做事"</div>
+                            <div style="font-size:13px;color:#1e40af;line-height:1.75;">
+                                当需要重复执行同一段代码时，用 while 循环代替手动复制，几行代码就能搞定成百上千次重复。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 要点 2 -->
+                    <div style="display:flex;gap:16px;align-items:flex-start;background:#eef2ff;border:1.5px solid #c7d2fe;border-radius:14px;padding:16px 20px;">
+                        <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">2</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#3730a3;margin-bottom:5px;">计数器模式：while 最常用的写法</div>
+                            <div style="font-size:13px;color:#3730a3;line-height:1.75;">
+                                三步走：① 初始化计数变量（如 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">count = 1</code>）② 判断条件（如 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">while count &lt;= 5</code>）③ 循环体末尾更新变量（<code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">count += 1</code>）。<strong>第③步别忘了</strong>，否则循环停不下来。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 要点 3 -->
+                    <div style="display:flex;gap:16px;align-items:flex-start;background:#fef2f2;border:1.5px solid #fecaca;border-radius:14px;padding:16px 20px;">
+                        <div style="background:linear-gradient(135deg,#dc2626,#ef4444);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">3</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#b91c1c;margin-bottom:5px;">break：立刻退出整个循环</div>
+                            <div style="font-size:13px;color:#991b1b;line-height:1.75;">
+                                执行到 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">break</code>，循环立刻结束，跳到循环后面继续执行。常用于"找到了就停"的场景，比如猜数字游戏猜对后退出。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 要点 4 -->
+                    <div style="display:flex;gap:16px;align-items:flex-start;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:14px;padding:16px 20px;">
+                        <div style="background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">4</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#b45309;margin-bottom:5px;">continue：跳过本次，继续下一次</div>
+                            <div style="font-size:13px;color:#92400e;line-height:1.75;">
+                                执行到 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">continue</code>，跳过本次循环剩余的代码，回头重新判断条件，继续下一次循环。就像做卷子时遇到不会的题，跳过这道继续做后面的。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 要点 5 -->
+                    <div style="display:flex;gap:16px;align-items:flex-start;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:14px;padding:16px 20px;">
+                        <div style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">5</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#6d28d9;margin-bottom:5px;">while True：配合 break 使用的持续循环</div>
+                            <div style="font-size:13px;color:#5b21b6;line-height:1.75;">
+                                条件写 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">True</code> 时循环持续运行，必须靠 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">break</code> 来退出。适合"不知道要跑几次，只知道满足条件就停"的场景。程序转个不停时，按 <strong>Ctrl + C</strong> 可随时停止。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 要点 6 -->
+                    <div style="display:flex;gap:16px;align-items:flex-start;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px 20px;">
+                        <div style="background:linear-gradient(135deg,#16a34a,#22c55e);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">6</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#15803d;margin-bottom:5px;">嵌套循环：循环里面再套循环</div>
+                            <div style="font-size:13px;color:#166534;line-height:1.75;">
+                                外层循环每执行一次，内层循环就<strong>完整跑完一遍</strong>。关键点：每次外层循环开始时，内层的计数变量必须<strong>重新初始化</strong>，否则内层从第二次起就不会执行了。
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 一句话总结 -->
+                <div style="background:linear-gradient(135deg,#1e1b4b,#2e1065);border-radius:14px;padding:20px 24px;margin-top:20px;display:flex;gap:14px;align-items:center;">
+                    <div style="font-size:28px;flex-shrink:0;">🎯</div>
+                    <div style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.8;">
+                        <strong style="color:white;display:block;margin-bottom:4px;">一句话记住 while 循环的本质</strong>
+                        <em>"只要条件还成立，就一直重复做；条件不成立了，就停下来。"</em>——掌握了这句话，while 循环就掌握了 80%。
+                    </div>
+                </div>
+            </section>
+
             <!-- 互动测验 -->
             <section class="content-section animate-in" style="animation-delay:.3s">
                 <div class="section-label">
@@ -1157,93 +1245,7 @@ while i <= 9:           # 外层：被乘数 1~9
                 </div>
             </section>
 
-            <!-- 本节要点 -->
-            <section class="content-section animate-in" style="animation-delay:.45s">
-                <div class="section-label">
-                    <div class="section-label-icon">📌</div>
-                    <span>本节要点</span>
-                </div>
-                <p class="content-p">学完这一节，你应该掌握以下几个核心知识点，来对照检查一下吧：</p>
-
-                <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
-
-                    <!-- 要点 1 -->
-                    <div style="display:flex;gap:16px;align-items:flex-start;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:14px;padding:16px 20px;">
-                        <div style="background:linear-gradient(135deg,#2563eb,#4f46e5);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">1</div>
-                        <div>
-                            <div style="font-size:14px;font-weight:800;color:#1d4ed8;margin-bottom:5px;">while 循环的作用：让程序"重复做事"</div>
-                            <div style="font-size:13px;color:#1e40af;line-height:1.75;">
-                                当需要重复执行同一段代码时，用 while 循环代替手动复制，几行代码就能搞定成百上千次重复。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 要点 2 -->
-                    <div style="display:flex;gap:16px;align-items:flex-start;background:#eef2ff;border:1.5px solid #c7d2fe;border-radius:14px;padding:16px 20px;">
-                        <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">2</div>
-                        <div>
-                            <div style="font-size:14px;font-weight:800;color:#3730a3;margin-bottom:5px;">计数器模式：while 最常用的写法</div>
-                            <div style="font-size:13px;color:#3730a3;line-height:1.75;">
-                                三步走：① 初始化计数变量（如 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">count = 1</code>）② 判断条件（如 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">while count &lt;= 5</code>）③ 循环体末尾更新变量（<code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">count += 1</code>）。<strong>第③步别忘了</strong>，否则循环停不下来。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 要点 3 -->
-                    <div style="display:flex;gap:16px;align-items:flex-start;background:#fef2f2;border:1.5px solid #fecaca;border-radius:14px;padding:16px 20px;">
-                        <div style="background:linear-gradient(135deg,#dc2626,#ef4444);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">3</div>
-                        <div>
-                            <div style="font-size:14px;font-weight:800;color:#b91c1c;margin-bottom:5px;">break：立刻退出整个循环</div>
-                            <div style="font-size:13px;color:#991b1b;line-height:1.75;">
-                                执行到 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">break</code>，循环立刻结束，跳到循环后面继续执行。常用于"找到了就停"的场景，比如猜数字游戏猜对后退出。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 要点 4 -->
-                    <div style="display:flex;gap:16px;align-items:flex-start;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:14px;padding:16px 20px;">
-                        <div style="background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">4</div>
-                        <div>
-                            <div style="font-size:14px;font-weight:800;color:#b45309;margin-bottom:5px;">continue：跳过本次，继续下一次</div>
-                            <div style="font-size:13px;color:#92400e;line-height:1.75;">
-                                执行到 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">continue</code>，跳过本次循环剩余的代码，回头重新判断条件，继续下一次循环。就像做卷子时遇到不会的题，跳过这道继续做后面的。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 要点 5 -->
-                    <div style="display:flex;gap:16px;align-items:flex-start;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:14px;padding:16px 20px;">
-                        <div style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">5</div>
-                        <div>
-                            <div style="font-size:14px;font-weight:800;color:#6d28d9;margin-bottom:5px;">while True：配合 break 使用的持续循环</div>
-                            <div style="font-size:13px;color:#5b21b6;line-height:1.75;">
-                                条件写 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">True</code> 时循环持续运行，必须靠 <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:4px;">break</code> 来退出。适合"不知道要跑几次，只知道满足条件就停"的场景。程序转个不停时，按 <strong>Ctrl + C</strong> 可随时停止。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 要点 6 -->
-                    <div style="display:flex;gap:16px;align-items:flex-start;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px 20px;">
-                        <div style="background:linear-gradient(135deg,#16a34a,#22c55e);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;margin-top:1px;">6</div>
-                        <div>
-                            <div style="font-size:14px;font-weight:800;color:#15803d;margin-bottom:5px;">嵌套循环：循环里面再套循环</div>
-                            <div style="font-size:13px;color:#166534;line-height:1.75;">
-                                外层循环每执行一次，内层循环就<strong>完整跑完一遍</strong>。关键点：每次外层循环开始时，内层的计数变量必须<strong>重新初始化</strong>，否则内层从第二次起就不会执行了。
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- 一句话总结 -->
-                <div style="background:linear-gradient(135deg,#1e1b4b,#2e1065);border-radius:14px;padding:20px 24px;margin-top:20px;display:flex;gap:14px;align-items:center;">
-                    <div style="font-size:28px;flex-shrink:0;">🎯</div>
-                    <div style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.8;">
-                        <strong style="color:white;display:block;margin-bottom:4px;">一句话记住 while 循环的本质</strong>
-                        <em>"只要条件还成立，就一直重复做；条件不成立了，就停下来。"</em>——掌握了这句话，while 循环就掌握了 80%。
-                    </div>
-                </div>
-            </section>
+            
 
             <!-- 章节导航 -->
             <div class="chapter-footer animate-in" style="animation-delay:.5s">
