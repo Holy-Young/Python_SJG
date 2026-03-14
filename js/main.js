@@ -22,8 +22,8 @@ const COURSE_CONFIG = {
       title: "第三章 · 条件与循环",
       lessons: [
         { title: "3.1 if 判断",    file: "chapter3.html" },
-        { title: "3.2 for 循环",   file: "chapter3-2.html" },
-        { title: "3.3 while 循环", file: "chapter3-3.html" },
+        { title: "3.2 while 循环",   file: "chapter3-2.html" },
+        { title: "3.3 for 循环", file: "chapter3-3.html" },
       ]
     },
     {

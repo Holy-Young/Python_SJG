@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.2 while 循环</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/chapter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        /* ── while 循环流程图 ──────────────────────── */
+        .while-flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 28px auto;
+            max-width: 380px;
+            gap: 0;
+        }
+        .wfc-start, .wfc-end {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            border-radius: 50px;
+            padding: 11px 36px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .wfc-end { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .wfc-arrow {
+            width: 2px; height: 28px;
+            background: #94a3b8;
+            position: relative;
+        }
+        .wfc-arrow::after {
+            content: '▼';
+            position: absolute;
+            bottom: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        .wfc-diamond {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #fbbf24;
+            color: #78350f;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            margin: 4px 0;
+        }
+        .wfc-row { display: flex; align-items: center; gap: 0; width: 100%; justify-content: center; margin: 4px 0; }
+        .wfc-action {
+            background: #eff6ff;
+            border: 2px solid #93c5fd;
+            border-radius: 10px;
+            padding: 12px 22px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1d4ed8;
+            text-align: center;
+            min-width: 140px;
+        }
+        .wfc-action-green { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+        .wfc-action-red   { background: #fff1f2; border-color: #fca5a5; color: #b91c1c; min-width: 100px; }
+        .wfc-side-label { font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 50px; white-space: nowrap; }
+        .label-true  { background: #dcfce7; color: #15803d; }
+        .label-false { background: #fee2e2; color: #b91c1c; }
+        .wfc-horiz-arrow { width: 32px; height: 2px; background: #94a3b8; position: relative; flex-shrink: 0; }
+        .wfc-horiz-arrow.right::after { content: '▶'; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); font-size: 10px; color: #94a3b8; }
+        .wfc-back-line {
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+            font-size: 12px;
+            color: #94a3b8;
+            gap: 8px;
+        }
+        .wfc-loop-arrow {
+            border: 2px solid #94a3b8;
+            border-right: none;
+            border-top: none;
+            width: 50px;
+            height: 60px;
+            border-radius: 0 0 0 8px;
+            margin-left: 16px;
+            position: relative;
+        }
+
+        /* ── 计数器可视化 ──────────────────────────── */
+        .counter-vis {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            border-radius: 18px;
+            padding: 26px 30px;
+            margin: 22px 0;
+            color: white;
+        }
+        .cv-title { font-size: 14px; font-weight: 800; color: #e0e7ff; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+        .cv-table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: 'Courier New', monospace; }
+        .cv-table th {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            padding: 8px 14px;
+            text-align: left;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        .cv-table td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); color: #e2e8f0; }
+        .cv-table tr:last-child td { border-bottom: none; }
+        .cv-table tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+        .cv-highlight { color: #fbbf24; font-weight: 700; }
+        .cv-cond-true  { color: #34d399; }
+        .cv-cond-false { color: #f87171; }
+        .cv-action     { color: #7dd3fc; }
+
+        /* ── break / continue 对比 ─────────────────── */
+        .bk-cont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .bk-card { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,.07); }
+        .bk-head { padding: 15px 20px; font-size: 15px; font-weight: 900; color: white; display: flex; align-items: center; gap: 10px; }
+        .bk-head-red    { background: linear-gradient(135deg, #dc2626, #ef4444); }
+        .bk-head-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
+        .bk-body { padding: 16px 20px; background: white; font-size: 13px; color: #475569; line-height: 1.75; }
+        .bk-body code { display: block; background: #f8fafc; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #6366f1; margin-top: 10px; font-family: 'Courier New', monospace; white-space: pre; line-height: 1.7; }
+
+        /* ── 猜数字模拟器 ─────────────────────────── */
+        .guess-sim {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+            border: 2px solid #e0e7ff;
+            border-radius: 18px;
+            padding: 28px;
+            margin: 24px 0;
+        }
+        .guess-title { font-size: 15px; font-weight: 800; color: #3730a3; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .guess-desc { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+        .guess-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+        .guess-input {
+            flex: 1; min-width: 120px; max-width: 180px;
+            padding: 10px 16px;
+            border: 2px solid #c7d2fe; border-radius: 10px;
+            font-size: 15px; font-family: 'Courier New', monospace; color: #1e293b;
+            outline: none; transition: border-color 0.2s;
+            text-align: center;
+        }
+        .guess-input:focus { border-color: #6366f1; }
+        .guess-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white; border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .guess-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,.35); }
+        .guess-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        .guess-reset-btn {
+            padding: 10px 20px;
+            background: white; color: #64748b;
+            border: 2px solid #e2e8f0; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .guess-reset-btn:hover { border-color: #c7d2fe; }
+        .guess-log {
+            background: #1e293b; border-radius: 12px;
+            padding: 16px 20px; font-family: 'Courier New', monospace;
+            font-size: 13px; min-height: 80px; max-height: 240px;
+            overflow-y: auto; line-height: 2;
+        }
+        .guess-log .gl-prompt  { color: #38bdf8; }
+        .guess-log .gl-hint    { color: #fbbf24; }
+        .guess-log .gl-win     { color: #34d399; font-weight: 700; }
+        .guess-log .gl-lose    { color: #f87171; }
+        .guess-log .gl-system  { color: #475569; font-style: italic; }
+        .guess-progress-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+        .guess-attempts { font-size: 13px; color: #64748b; }
+        .guess-dots { display: flex; gap: 5px; }
+        .guess-dot { width: 10px; height: 10px; border-radius: 50%; background: #e2e8f0; transition: background 0.3s; }
+        .guess-dot.used { background: #6366f1; }
+        .guess-dot.win  { background: #22c55e; }
+
+        /* ── 死循环警告卡 ─────────────────────────── */
+        .infinite-warn {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border: 2px solid #fed7aa;
+            border-radius: 16px;
+            padding: 22px 26px;
+            margin: 20px 0;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .iw-icon  { font-size: 28px; flex-shrink: 0; }
+        .iw-title { font-size: 15px; font-weight: 800; color: #c2410c; margin-bottom: 8px; }
+        .iw-text  { font-size: 13.5px; color: #7c2d12; line-height: 1.75; }
+        .iw-tips  { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+        .iw-tip   { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: #92400e; line-height: 1.6; }
+        .iw-tip-num { background: #fed7aa; color: #c2410c; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 1px; }
+
+        /* ── 嵌套循环可视化 ───────────────────────── */
+        .nested-while-vis {
+            background: #fafafa;
+            border: 2px dashed #c7d2fe;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .nw-outer {
+            background: #eff6ff;
+            border: 2px solid #93c5fd;
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+        .nw-label-outer { font-size: 12px; font-weight: 800; color: #1d4ed8; margin-bottom: 10px; letter-spacing: .5px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .nw-inner {
+            background: #f5f3ff;
+            border: 2px solid #c4b5fd;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+        }
+        .nw-label-inner { font-size: 12px; font-weight: 800; color: #6d28d9; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .nw-body  { font-size: 13px; color: #374151; line-height: 1.75; }
+        .nw-exec  {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #15803d;
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+
+        /* ── 九九乘法表模拟器 ─────────────────────── */
+        .multiply-sim {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            border-radius: 18px;
+            padding: 26px 30px;
+            margin: 24px 0;
+            color: white;
+        }
+        .ms-title { font-size: 14px; font-weight: 800; color: #e0e7ff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .ms-desc  { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 18px; }
+        .ms-control { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+        .ms-label { font-size: 13px; color: #94a3b8; }
+        .ms-select {
+            padding: 8px 14px; border-radius: 10px;
+            background: rgba(255,255,255,.1);
+            color: white; border: 1px solid rgba(255,255,255,.2);
+            font-size: 13px; cursor: pointer; outline: none;
+        }
+        .ms-run-btn {
+            padding: 8px 22px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white; border: none; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ms-run-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(99,102,241,.4); }
+        .ms-output {
+            background: rgba(0,0,0,.3);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #86efac;
+            line-height: 2;
+            max-height: 260px;
+            overflow-y: auto;
+            min-height: 60px;
+        }
+        .ms-out-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+        .ms-cell { color: #7dd3fc; min-width: 90px; }
+
+        /* ── 循环计数步进器（break/continue互动） ─── */
+        .step-sim {
+            background: linear-gradient(135deg, #f8fafc 0%, #fefce8 100%);
+            border: 2px solid #fde68a;
+            border-radius: 18px;
+            padding: 24px 28px;
+            margin: 24px 0;
+        }
+        .step-title { font-size: 15px; font-weight: 800; color: #78350f; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .step-desc  { font-size: 13px; color: #92400e; margin-bottom: 18px; }
+        .step-btns  { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .step-btn {
+            padding: 9px 20px; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .step-btn-go    { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; border: none; }
+        .step-btn-go:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(245,158,11,.4); }
+        .step-btn-reset { background: white; color: #64748b; border: 2px solid #e2e8f0; }
+        .step-btn-reset:hover { border-color: #fde68a; }
+        .step-display {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .sd-panel {
+            background: #1e293b; border-radius: 12px;
+            padding: 14px 18px; font-family: 'Courier New', monospace;
+            font-size: 13px; min-height: 130px; line-height: 2;
+        }
+        .sd-label { font-size: 11px; color: #475569; margin-bottom: 6px; font-family: 'Noto Sans SC', sans-serif; }
+        .sd-panel .sd-loop  { color: #7dd3fc; }
+        .sd-panel .sd-skip  { color: #fbbf24; }
+        .sd-panel .sd-break { color: #f87171; }
+        .sd-panel .sd-out   { color: #86efac; }
+
+        /* ── 响应式 ───────────────────────────────── */
+        @media (max-width: 768px) {
+            .bk-cont-grid  { grid-template-columns: 1fr; }
+            .step-display  { grid-template-columns: 1fr; }
+            .ms-output     { font-size: 11px; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top-nav">
+        <div class="nav-logo">
+            <button id="menuToggle" class="menu-toggle">☰</button>
+            <a href="../index.html">🐍 Python 入门课</a>
+        </div>
+        <div class="nav-info">专为初中生设计 · 从零开始学编程</div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+
+            <!-- 面包屑 -->
+            <nav class="breadcrumb">
+                <a href="../index.html">🏠 首页</a>
+                <span class="bc-sep">/</span>
+                <a href="chapter3.html">第三章</a>
+                <span class="bc-sep">/</span>
+                <span class="bc-current">3.2 while 循环</span>
+            </nav>
+
+            <!-- Hero -->
+            <div class="chapter-hero animate-in">
+                <div class="chapter-hero-bg">
+                    <div class="ch-circle cc1"></div>
+                    <div class="ch-circle cc2"></div>
+                </div>
+                <div class="chapter-hero-content">
+                    <div class="chapter-hero-left">
+                        <div class="chapter-meta">
+                            <span class="badge badge-intermediate">进阶</span>
+                            <span class="chapter-num">第三章 · 第 2 节</span>
+                        </div>
+                        <h1>while 循环</h1>
+                        <p>让程序"重复做事"！学会用 while 写出循环逻辑，掌握 break、continue 和嵌套循环，轻松处理重复任务。</p>
+                    </div>
+                    <div class="chapter-hero-right">
+                        <div class="chapter-info-pill">🗺️ 含思维导图</div>
+                        <div class="chapter-info-pill">🎬 含视频讲解</div>
+                        <div class="chapter-info-pill">💻 含代码示例</div>
+                        <div class="chapter-info-pill">🎮 含互动模拟器</div>
+                        <div class="chapter-info-pill">🧠 含互动测验</div>
+                    </div>
+                </div>
+                <div class="chapter-progress">
+                    <div class="progress-label-row">
+                        <span>📊 本章学习进度</span>
+                        <span class="progress-text"></span>
+                    </div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                </div>
+            </div>
+
+            <!-- ① 知识结构 -->
+            <section class="content-section animate-in" style="animation-delay:.05s">
+                <div class="section-label">
+                    <div class="section-label-icon">🗺️</div>
+                    <span>本节知识结构</span>
+                </div>
+                <p class="content-p">在开始学习之前，先来看看这一节我们要学哪些内容：</p>
+                <div class="mindmap">
+                    <div class="mindmap-center">第二节<br>while 循环</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch branch-blue">
+                            <div class="branch-node">① 为什么需要循环</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">重复做事的场景</div>
+                                <div class="branch-leaf">循环 vs 手动重复</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-indigo">
+                            <div class="branch-node">② while 基本语法</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">条件判断结构</div>
+                                <div class="branch-leaf">执行流程图</div>
+                                <div class="branch-leaf">计数器模式</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-violet">
+                            <div class="branch-node">③ break 与 continue</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">break 提前退出</div>
+                                <div class="branch-leaf">continue 跳过本次</div>
+                                <div class="branch-leaf">死循环 while True</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch branch-green">
+                            <div class="branch-node">④ 嵌套 while 循环</div>
+                            <div class="branch-leaves">
+                                <div class="branch-leaf">外层 × 内层</div>
+                                <div class="branch-leaf">执行次数叠加</div>
+                                <div class="branch-leaf">九九乘法表实战</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 视频 -->
+            <section class="content-section animate-in" style="animation-delay:.08s">
+                <div class="section-label">
+                    <div class="section-label-icon">🎬</div>
+                    <span>视频讲解</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1qW4y1a7fU&autoplay=0" allowfullscreen></iframe>
+                </div>
+                <div class="video-tip">💡 视频约 12 分钟，看前 5 分钟就能搞懂基本的 while 结构，建议先看视频再配合下面的图文加深理解</div>
+            </section>
+
+            <!-- ① 引入 -->
+            <section class="content-section animate-in" style="animation-delay:.1s">
+                <div class="section-label">
+                    <div class="section-label-icon">🤔</div>
+                    <span>① 为什么需要循环？</span>
+                </div>
+
+                <p class="content-p">
+                    想象一下：你要打印 "加油！" 这句话 <strong>100 次</strong>。如果不用循环，你需要写 100 行 <code>print("加油！")</code>，不仅超级麻烦，代码改起来也很痛苦。
+                </p>
+
+                <div class="bk-cont-grid" style="margin: 20px 0;">
+                    <div class="bk-card">
+                        <div class="bk-head bk-head-red">❌ 不用循环：重复写代码</div>
+                        <div class="bk-body">
+                            <code>print("加油！")  # 第1次
+print("加油！")  # 第2次
+print("加油！")  # 第3次
+# ... 还要写 96 行
+print("加油！")  # 第100次</code>
+                            <p style="margin-top:12px;font-size:13px;color:#ef4444;font-weight:600;">😫 太麻烦了！</p>
+                        </div>
+                    </div>
+                    <div class="bk-card">
+                        <div class="bk-head" style="background:linear-gradient(135deg,#16a34a,#22c55e);">✅ 用 while 循环：简洁优雅</div>
+                        <div class="bk-body">
+                            <code>count = 1
+while count <= 100:
+    print("加油！")
+    count += 1
+# 4 行搞定！</code>
+                            <p style="margin-top:12px;font-size:13px;color:#16a34a;font-weight:600;">😎 4 行代码搞定！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>生活中的循环例子</strong>
+                        <p>闹钟每天重复响；游戏里角色不停走路；ATM 机反复等待你输入密码……这些都是"循环"在现实中的体现。<code>while</code> 循环就是让程序能够<strong>重复执行</strong>一段代码，直到某个条件不再成立为止。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ② while 基本语法 -->
+            <section class="content-section animate-in" style="animation-delay:.15s">
+                <div class="section-label">
+                    <div class="section-label-icon">🔄</div>
+                    <span>② while 基本语法与执行流程</span>
+                </div>
+
+                <h3 class="content-h3">📐 基本语法格式</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">语法格式</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">while 条件:
+    # 条件为 True 时，反复执行这里的代码
+    执行的代码A
+    执行的代码B
+    # 通常这里要让条件"往假的方向变化"，否则永远不会停
+
+后续代码  # 条件变为 False 后，才执行这里</code></pre>
+                </div>
+
+                <h3 class="content-h3">🗺️ 执行流程图</h3>
+                <p class="content-p">while 循环的执行顺序如下图所示：每次进入循环前都先判断条件，条件为真才执行，执行完再<strong>回头重新判断</strong>，形成一个"圈"。</p>
+
+                <!-- 极简流程图 -->
+                <div style="background:#f8fafc;border:2px solid #e0e7ff;border-radius:16px;padding:24px 20px;margin:16px 0;text-align:center;">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;font-weight:600;">
+                        <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border-radius:50px;padding:10px 32px;">开始</div>
+                        <div style="color:#94a3b8;font-size:18px;line-height:1;">↓</div>
+                        <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:10px;padding:10px 28px;color:#78350f;">判断条件</div>
+                        <div style="display:flex;gap:32px;align-items:flex-start;margin-top:4px;">
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <span style="background:#dcfce7;color:#15803d;border-radius:50px;padding:3px 14px;font-size:12px;font-weight:800;">✓ 条件成立</span>
+                                <div style="color:#94a3b8;font-size:18px;">↓</div>
+                                <div style="background:#eff6ff;border:2px solid #93c5fd;border-radius:10px;padding:10px 20px;color:#1d4ed8;">执行循环里的代码</div>
+                                <div style="color:#6366f1;font-size:13px;font-weight:700;">↩ 回头重新判断</div>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:30px;">
+                                <span style="background:#fee2e2;color:#b91c1c;border-radius:50px;padding:3px 14px;font-size:12px;font-weight:800;">✗ 条件不成立</span>
+                                <div style="color:#94a3b8;font-size:18px;">↓</div>
+                                <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:10px 20px;color:#15803d;">跳出循环，继续往后</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="font-size:12px;color:#94a3b8;margin:16px 0 0;font-style:italic;">💡 记住这个"圈"：判断 → 执行 → 回头判断 → 执行 → … → 条件不成立 → 结束</p>
+                </div>
+
+                <h3 class="content-h3">🔢 计数器模式——最常用的写法</h3>
+                <p class="content-p">用一个变量来计数，每次循环让它加 1，当它超过目标值时停止。这是 while 循环最经典的用法：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 打印 1 到 5
+count = 1           # ① 初始化计数器
+while count <= 5:   # ② 判断条件
+    print(count)    # ③ 执行操作
+    count += 1      # ④ 更新计数器（关键！别忘了这行）
+
+# 输出：1  2  3  4  5</code></pre>
+                </div>
+
+                <p class="content-p">来看一个更有趣的例子——用循环算 1 到 100 的总和：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">total = 0
+i = 1
+while i <= 100:
+    total += i   # 等价于 total = total + i
+    i += 1
+
+print(f"1 到 100 的总和是：{total}")
+# 输出：1 到 100 的总和是：5050</code></pre>
+                </div>
+
+                <p class="content-p">我们来模拟一下计算机的思路，一步一步地走——以"打印 1 到 5"为例：</p>
+
+                <div class="counter-vis">
+                    <div class="cv-title">📊 假装自己是计算机，一步步走一遍</div>
+                    <table class="cv-table">
+                        <tr>
+                            <th>第几次</th>
+                            <th>count 是多少</th>
+                            <th>count &lt;= 5 成立吗？</th>
+                            <th>做什么</th>
+                            <th>count 变成</th>
+                        </tr>
+                        <tr>
+                            <td>第 1 次</td>
+                            <td class="cv-highlight">1</td>
+                            <td class="cv-cond-true">✓ 成立，进入循环</td>
+                            <td class="cv-action">print(1)</td>
+                            <td class="cv-highlight">2</td>
+                        </tr>
+                        <tr>
+                            <td>第 2 次</td>
+                            <td class="cv-highlight">2</td>
+                            <td class="cv-cond-true">✓ 成立，进入循环</td>
+                            <td class="cv-action">print(2)</td>
+                            <td class="cv-highlight">3</td>
+                        </tr>
+                        <tr>
+                            <td>第 3 次</td>
+                            <td class="cv-highlight">3</td>
+                            <td class="cv-cond-true">✓ 成立，进入循环</td>
+                            <td class="cv-action">print(3)</td>
+                            <td class="cv-highlight">4</td>
+                        </tr>
+                        <!-- 可展开部分 -->
+                        <tbody id="tableMore" style="display:none;">
+                        <tr>
+                            <td>第 4 次</td>
+                            <td class="cv-highlight">4</td>
+                            <td class="cv-cond-true">✓ 成立，进入循环</td>
+                            <td class="cv-action">print(4)</td>
+                            <td class="cv-highlight">5</td>
+                        </tr>
+                        <tr>
+                            <td>第 5 次</td>
+                            <td class="cv-highlight">5</td>
+                            <td class="cv-cond-true">✓ 成立，进入循环</td>
+                            <td class="cv-action">print(5)</td>
+                            <td class="cv-highlight">6</td>
+                        </tr>
+                        <tr>
+                            <td>检查第 6 次？</td>
+                            <td class="cv-highlight">6</td>
+                            <td class="cv-cond-false">✗ 不成立，退出！</td>
+                            <td style="color:#475569">循环结束</td>
+                            <td>—</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button onclick="document.getElementById('tableMore').style.display=''; this.style.display='none';"
+                        style="margin-top:12px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);border-radius:8px;padding:7px 18px;font-size:13px;cursor:pointer;" id="tableExpandBtn">
+                        ▼ 点击看完整过程（第 4、5 次）
+                    </button>
+                </div>
+
+                <!-- 温和提示 + 试一试 -->
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>写 while 循环记住一件事：让条件最终能变假</strong>
+                        <p>只要循环体里有让变量"往假的方向变化"的代码（比如 <code>count += 1</code>），循环就一定能停下来。如果程序真的转个不停也别慌——后面我们会教你怎么轻松处理这种情况 😊</p>
+                    </div>
+                </div>
+
+                <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:14px;padding:18px 22px;margin:20px 0;">
+                    <div style="font-size:14px;font-weight:800;color:#15803d;margin-bottom:10px;">✏️ 试一试！</div>
+                    <div style="font-size:13.5px;color:#166534;line-height:1.8;">
+                        把上面"打印 1 到 5"的代码复制到 Python 里，分别改改看：<br>
+                        · 把 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">count &lt;= 5</code> 改成 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">count &lt;= 3</code>，会输出什么？<br>
+                        · 把 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">count += 1</code> 改成 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">count += 2</code>，又会输出什么？
+                    </div>
+                </div>
+            </section>
+
+            <!-- ③ break -->
+            <section class="content-section animate-in" style="animation-delay:.2s">
+                <div class="section-label">
+                    <div class="section-label-icon">🛑</div>
+                    <span>③ break — 提前结束循环</span>
+                </div>
+
+                <p class="content-p">
+                    有时候，我们不想等到条件变假才退出，而是在某个特殊情况下<strong>立刻停止循环</strong>。这就是 <code>break</code> 的用途。
+                    <code>break</code> 一执行，循环立刻结束，程序跳到循环后面继续执行。
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 找到第一个能被 7 整除的数
+i = 1
+while i <= 100:
+    if i % 7 == 0:
+        print(f"找到了！{i} 能被 7 整除")
+        break        # 找到就立刻停止，不再继续
+    i += 1
+
+print("循环结束")
+# 输出：找到了！7 能被 7 整除
+#       循环结束</code></pre>
+                </div>
+
+                <h3 class="content-h3">🎮 猜数字小游戏（break 实战）</h3>
+                <p class="content-p">猜数字游戏是 break 最经典的应用：反复让用户猜，猜对了就 break 退出。来试试这个互动模拟器：</p>
+
+                <!-- 猜数字模拟器 -->
+                <div class="guess-sim">
+                    <div class="guess-title">🎯 猜数字游戏模拟器</div>
+                    <div class="guess-desc">程序随机选了 1~20 的一个数，你有 6 次机会猜中它！</div>
+                    <div class="guess-progress-row">
+                        <span class="guess-attempts" id="guessAttempts">剩余次数：6 / 6</span>
+                        <div class="guess-dots" id="guessDots">
+                            <div class="guess-dot"></div><div class="guess-dot"></div>
+                            <div class="guess-dot"></div><div class="guess-dot"></div>
+                            <div class="guess-dot"></div><div class="guess-dot"></div>
+                        </div>
+                    </div>
+                    <div class="guess-row">
+                        <input class="guess-input" id="guessInput" type="number" min="1" max="20" placeholder="1 ~ 20">
+                        <button class="guess-btn" id="guessBtn" onclick="makeGuess()">猜！</button>
+                        <button class="guess-reset-btn" onclick="resetGuess()">🔄 重新开始</button>
+                    </div>
+                    <div class="guess-log" id="guessLog">
+                        <div><span class="gl-system">系统：已选好一个数，开始猜吧！</span></div>
+                    </div>
+                </div>
+
+                <p class="content-p" style="margin-top:16px;">上面的游戏，对应的 Python 代码逻辑是这样的：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">import random
+secret = random.randint(1, 20)  # 随机选 1~20 的数
+attempts = 0
+max_attempts = 6
+
+while attempts < max_attempts:
+    guess = int(input("请猜一个 1~20 的数："))
+    attempts += 1
+
+    if guess == secret:
+        print(f"🎉 恭喜猜对了！答案就是 {secret}，共猜了 {attempts} 次")
+        break              # 猜对了，立刻退出循环
+    elif guess < secret:
+        print("太小了，再大一点 ↑")
+    else:
+        print("太大了，再小一点 ↓")
+
+    if attempts == max_attempts:
+        print(f"😢 机会用完了！答案是 {secret}")</code></pre>
+                </div>
+            </section>
+
+            <!-- ④ continue -->
+            <section class="content-section animate-in" style="animation-delay:.22s">
+                <div class="section-label">
+                    <div class="section-label-icon">⏭️</div>
+                    <span>④ continue — 跳过本次，继续下一次</span>
+                </div>
+
+                <p class="content-p">
+                    <code>continue</code> 和 <code>break</code> 不同：<code>break</code> 是<strong>整个退出</strong>循环，而 <code>continue</code> 只是<strong>跳过当次剩余代码</strong>，直接回到条件判断，继续下一次循环。
+                </p>
+
+                <!-- 生活比喻 -->
+                <div style="background:linear-gradient(135deg,#fef9c3,#fef3c7);border:2px solid #fde68a;border-radius:14px;padding:18px 22px;margin:16px 0 20px;">
+                    <div style="font-size:14px;font-weight:800;color:#78350f;margin-bottom:12px;">🎒 用生活场景记住区别</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:#92400e;line-height:1.7;">
+                        <div>🛑 <strong>break</strong> = 老师突然说"下课！全班立刻收拾书包走人"——<em>整个循环直接结束</em></div>
+                        <div>⏭️ <strong>continue</strong> = 做卷子时遇到不会的题，"这题跳过！" ——<em>跳过这道题，但还要继续做后面的题</em></div>
+                    </div>
+                </div>
+
+                <div class="bk-cont-grid">
+                    <div class="bk-card">
+                        <div class="bk-head bk-head-red">🛑 break</div>
+                        <div class="bk-body">
+                            遇到 break，<strong>整个循环立刻终止</strong>，跳出去执行循环后面的代码。
+                            <code>i = 1
+while i <= 5:
+    if i == 3:
+        break     # 到 3 就停
+    print(i)
+    i += 1
+# 输出：1  2</code>
+                        </div>
+                    </div>
+                    <div class="bk-card">
+                        <div class="bk-head bk-head-orange">⏭️ continue</div>
+                        <div class="bk-body">
+                            遇到 continue，<strong>跳过本次循环剩余代码</strong>，回头重新判断条件，继续下一次。
+                            <code>i = 0
+while i < 5:
+    i += 1
+    if i == 3:
+        continue  # 跳过 3
+    print(i)
+# 输出：1  2  4  5</code>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">🍬 continue 实战：发糖果（跳过感冒的同学）</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 给 1~5 号同学发糖果，但 3 号感冒了，跳过他
+i = 0
+while i < 5:
+    i += 1
+    if i == 3:
+        print(f"  {i} 号感冒了，跳过！")
+        continue      # 跳过 3 号，继续发给后面的同学
+    print(f"给 {i} 号同学发糖果 🍬")
+
+# 输出：
+# 给 1 号同学发糖果 🍬
+# 给 2 号同学发糖果 🍬
+#   3 号感冒了，跳过！
+# 给 4 号同学发糖果 🍬
+# 给 5 号同学发糖果 🍬</code></pre>
+                </div>
+
+                <h3 class="content-h3">📝 continue 实战：只打印奇数</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 打印 1~10 中的所有奇数
+i = 0
+while i < 10:
+    i += 1
+    if i % 2 == 0:   # 如果是偶数
+        continue     # 跳过，不执行下面的 print
+    print(i)
+
+# 输出：1  3  5  7  9</code></pre>
+                </div>
+
+                <!-- break/continue 步进模拟器 -->
+                <div class="step-sim">
+                    <div class="step-title">🔬 执行过程模拟器</div>
+                    <div class="step-desc">点击"逐步执行"，看看 continue 是如何跳过偶数的（i 从 1 循环到 10）</div>
+                    <div class="step-btns">
+                        <button class="step-btn step-btn-go" onclick="stepNext()">▶ 逐步执行</button>
+                        <button class="step-btn step-btn-reset" onclick="stepReset()">🔄 重置</button>
+                    </div>
+                    <div class="step-display">
+                        <div class="sd-panel">
+                            <div class="sd-label">📋 执行记录</div>
+                            <div id="stepLog"></div>
+                        </div>
+                        <div class="sd-panel">
+                            <div class="sd-label">📤 输出结果</div>
+                            <div id="stepOutput"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:14px;padding:18px 22px;margin:20px 0 0;">
+                    <div style="font-size:14px;font-weight:800;color:#15803d;margin-bottom:10px;">✏️ 试一试！</div>
+                    <div style="font-size:13.5px;color:#166534;line-height:1.8;">
+                        把发糖果的代码复制到 Python 里，改改看：<br>
+                        · 把 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">if i == 3</code> 改成 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">if i == 2 or i == 4</code>，哪些人会被跳过？<br>
+                        · 如果把 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">continue</code> 改成 <code style="background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;">break</code>，会发生什么不同？
+                    </div>
+                </div>
+            </section>
+            <section class="content-section animate-in" style="animation-delay:.24s">
+                <div class="section-label">
+                    <div class="section-label-icon">♾️</div>
+                    <span>⑤ 一直转的循环：while True</span>
+                </div>
+
+                <p class="content-p">
+                    把 while 的条件直接写成 <code>True</code>，因为 True 永远成立，循环就会一直转下去——这叫<strong>持续循环</strong>（有时也叫"无限循环"）。听起来很危险？其实只要配合 <code>break</code>，它就是一个非常好用的结构！
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 反复让用户输入密码，直到输入正确才停
+while True:
+    password = input("请输入密码：")
+    if password == "abc123":
+        print("✅ 密码正确，欢迎进入！")
+        break        # 猜对了！break 让循环停下来
+    else:
+        print("❌ 密码错误，再试一次～")</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-text">
+                        <strong>什么时候用 while True？</strong>
+                        <p>当你一开始不知道循环要跑几次，只知道"满足某个条件就停"时，用 <code>while True + break</code> 非常方便。比如：反复让用户输入直到输入合法；游戏里一直等玩家操作直到玩家退出。</p>
+                    </div>
+                </div>
+
+                <div style="background:linear-gradient(135deg,#fffbeb,#fef9c3);border:2px solid #fde68a;border-radius:14px;padding:20px 24px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;">
+                    <div style="font-size:26px;flex-shrink:0;">😊</div>
+                    <div>
+                        <div style="font-size:14px;font-weight:800;color:#78350f;margin-bottom:8px;">程序一直转停不下来？别慌，这很正常！</div>
+                        <div style="font-size:13.5px;color:#92400e;line-height:1.75;">
+                            就像玩"老鹰捉小鸡"游戏，老师喊"停"游戏就结束。程序也有紧急停止方法——在终端里按 <strong>Ctrl + C</strong>，它就会乖乖停下来，不会伤到电脑。<br>
+                            <span style="margin-top:8px;display:block;">养成一个小习惯：写完循环后问自己"这个循环最终能停吗？" ✨</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ⑥ while 嵌套 -->
+            <section class="content-section animate-in" style="animation-delay:.26s">
+                <div class="section-label">
+                    <div class="section-label-icon">🔲</div>
+                    <span>⑥ while 嵌套循环</span>
+                </div>
+
+                <!-- 过渡提示 -->
+                <div style="background:linear-gradient(135deg,#eef2ff,#e0e7ff);border:2px solid #c7d2fe;border-radius:14px;padding:18px 22px;margin-bottom:20px;display:flex;gap:14px;align-items:center;">
+                    <div style="font-size:28px;flex-shrink:0;">🎯</div>
+                    <div style="font-size:13.5px;color:#3730a3;line-height:1.75;">
+                        <strong style="display:block;margin-bottom:4px;">单层 while 已经掌握了吗？来挑战双层！</strong>
+                        嵌套循环是 while 里稍微难一点的知识，不用担心——我们先从超简单的生活例子开始，一步一步来 😊
+                    </div>
+                </div>
+
+                <p class="content-p">
+                    循环里面还可以再套一个循环，这就叫<strong>嵌套循环</strong>。外层循环每执行一次，内层循环就会<strong>完整地跑完一遍</strong>。
+                </p>
+
+                <h3 class="content-h3">🔍 结构理解</h3>
+
+                <div class="nested-while-vis">
+                    <div class="nw-outer">
+                        <div class="nw-label-outer">🔵 外层 while（控制"第几组"）</div>
+                        <div class="nw-body">外层每循环一次，内层就从头跑一遍</div>
+                        <div class="nw-inner">
+                            <div class="nw-label-inner">🟣 内层 while（控制"组内每一项"）</div>
+                            <div class="nw-body">内层执行完一整圈后，控制权回到外层，外层再走一步</div>
+                            <div class="nw-exec">
+                                外层第 1 次 → 内层跑完 1 圈<br>
+                                外层第 2 次 → 内层再跑完 1 圈<br>
+                                外层第 3 次 → 内层再跑完 1 圈<br>
+                                … 以此类推
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">🕐 第一个例子：刷牙计划（超简单）</h3>
+                <p class="content-p">先用一个生活化的小例子感受一下嵌套循环的节奏：外层控制"今天星期几"，内层控制"每天刷几次牙"。</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 连续 3 天，每天刷 2 次牙
+day = 1
+while day <= 3:            # 外层：今天是第几天
+    print(f"第 {day} 天：")
+    time = 1
+    while time <= 2:       # 内层：今天刷第几次
+        print(f"  刷牙！（第 {time} 次）")
+        time += 1
+    day += 1
+
+# 输出：
+# 第 1 天：
+#   刷牙！（第 1 次）
+#   刷牙！（第 2 次）
+# 第 2 天：
+#   刷牙！（第 1 次）
+#   刷牙！（第 2 次）
+# 第 3 天：
+#   刷牙！（第 1 次）
+#   刷牙！（第 2 次）</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">🔑</div>
+                    <div class="info-box-text">
+                        <strong>嵌套循环的关键点：内层变量要重置！</strong>
+                        <p>注意看上面代码：每次外层循环开始时，都要把内层的变量（<code>time</code>）重新设为 1。如果忘记了，内层循环从第 2 天起就不会执行了（因为 time 已经是 3 了）。</p>
+                    </div>
+                </div>
+
+                <h3 class="content-h3">📐 基本语法结构</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">语法格式</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">i = 1
+while i <= 外层次数:       # 外层循环
+    j = 1                  # ← 每次外层循环开始，内层变量要重置！
+    while j <= 内层次数:   # 内层循环
+        # 执行操作
+        j += 1
+    i += 1</code></pre>
+                </div>
+
+                <h3 class="content-h3">🔢 再进一步：打印星号矩阵</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python"># 打印 3 行 × 4 列的星号
+row = 1
+while row <= 3:       # 外层：控制行数
+    col = 1
+    line = ""
+    while col <= 4:   # 内层：控制每行的列数
+        line += "★ "
+        col += 1
+    print(line)
+    row += 1
+
+# 输出：
+# ★ ★ ★ ★
+# ★ ★ ★ ★
+# ★ ★ ★ ★</code></pre>
+                </div>
+
+                <h3 class="content-h3">🏆 进阶挑战（选做）：九九乘法表</h3>
+                <div style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:12px;padding:12px 18px;margin-bottom:16px;font-size:13px;color:#5b21b6;display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:18px;">⭐</span>
+                    <span>这是一道挑战题！星号矩阵已经看懂了就来试试这个经典例子；还没完全明白也没关系，先巩固上面的内容再回来 😊</span>
+                </div>
+                <p class="content-p">九九乘法表是嵌套循环最经典的例子：外层控制"第几行（被乘数）"，内层控制"第几列（乘数）"。</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+                    </div>
+                    <pre><code class="language-python">i = 1
+while i <= 9:           # 外层：被乘数 1~9
+    j = 1
+    while j <= i:       # 内层：乘数 1~i（不超过被乘数）
+        result = i * j
+        print(f"{j}×{i}={result}", end="\t")  # end="\t" 表示不换行，用制表符隔开
+        j += 1
+    print()             # 每行结束后换行
+    i += 1</code></pre>
+                </div>
+
+                <!-- 九九乘法表互动模拟器 -->
+                <div class="multiply-sim">
+                    <div class="ms-title">🎮 九九乘法表生成器</div>
+                    <div class="ms-desc">选择显示到第几行，点击生成看看效果</div>
+                    <div class="ms-control">
+                        <span class="ms-label">显示到：</span>
+                        <select class="ms-select" id="msRange">
+                            <option value="3">3 的乘法</option>
+                            <option value="5">5 的乘法</option>
+                            <option value="9" selected>完整九九表</option>
+                        </select>
+                        <button class="ms-run-btn" onclick="generateMultiply()">▶ 生成</button>
+                    </div>
+                    <div class="ms-output" id="msOutput">
+                        <span style="color:#475569">（点击生成按钮查看结果）</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-icon">⚡</div>
+                    <div class="info-box-text">
+                        <strong>嵌套循环的执行次数 = 外层次数 × 内层次数</strong>
+                        <p>比如九九乘法表：外层 9 次 × 内层平均约 5 次 ≈ 共执行约 45 次乘法。嵌套层数越多，执行次数增长越快，所以一般不建议超过三层嵌套。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 互动测验 -->
+            <section class="content-section animate-in" style="animation-delay:.3s">
+                <div class="section-label">
+                    <div class="section-label-icon">🧠</div>
+                    <span>互动测验</span>
+                </div>
+
+                <div class="quiz-container">
+
+                    <div class="quiz-item" data-question="q1">
+                        <div class="quiz-question"><span class="quiz-num">Q1</span>以下代码会输出几次
+                            "Hello"？<br><code>i = 0<br>while i &lt; 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Hello")<br>&nbsp;&nbsp;&nbsp;&nbsp;i += 1</code>
+                        </div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">2 次</div>
+                            <div class="quiz-option" data-correct="true">3 次</div>
+                            <div class="quiz-option" data-correct="false">4 次</div>
+                            <div class="quiz-option" data-correct="false">无限次（死循环）</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="q2">
+                        <div class="quiz-question"><span class="quiz-num">Q2</span>下面哪段代码会造成死循环？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false"><code>i = 1; while i &lt;= 5: i += 1</code></div>
+                            <div class="quiz-option" data-correct="true"><code>i = 1; while i &lt;= 5: print(i)</code>（没有 i += 1）</div>
+                            <div class="quiz-option" data-correct="false"><code>while True: break</code></div>
+                            <div class="quiz-option" data-correct="false"><code>i = 10; while i > 0: i -= 1</code></div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="q3">
+                        <div class="quiz-question"><span class="quiz-num">Q3</span><code>break</code> 的作用是？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">跳过本次循环，继续下一次</div>
+                            <div class="quiz-option" data-correct="true">立刻退出整个循环</div>
+                            <div class="quiz-option" data-correct="false">暂停循环 1 秒</div>
+                            <div class="quiz-option" data-correct="false">重新开始循环</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="q4">
+                        <div class="quiz-question"><span class="quiz-num">Q4</span>以下代码的输出结果是？<br><code>i = 0<br>while i &lt; 5:<br>&nbsp;&nbsp;&nbsp;&nbsp;i += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if i == 3: continue<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</code>
+                        </div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">1 2 3 4 5</div>
+                            <div class="quiz-option" data-correct="true">1 2 4 5</div>
+                            <div class="quiz-option" data-correct="false">1 2</div>
+                            <div class="quiz-option" data-correct="false">1 2 3</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="q5">
+                        <div class="quiz-question"><span class="quiz-num">Q5</span>写嵌套 while 循环时，内层循环的变量每次外层循环开始时应该怎么处理？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">不用管，继续用上次的值</div>
+                            <div class="quiz-option" data-correct="true">重新初始化（比如重置为 1）</div>
+                            <div class="quiz-option" data-correct="false">删掉这个变量</div>
+                            <div class="quiz-option" data-correct="false">加上外层变量的值</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="q6">
+                        <div class="quiz-question"><span class="quiz-num">Q6</span>以下嵌套循环一共会执行 <code>print()</code>
+                            几次？<br><code>i = 1<br>while i &lt;= 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;j = 1<br>&nbsp;&nbsp;&nbsp;&nbsp;while j &lt;= 2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(i, j)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;i += 1</code>
+                        </div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">3 次</div>
+                            <div class="quiz-option" data-correct="false">2 次</div>
+                            <div class="quiz-option" data-correct="true">6 次</div>
+                            <div class="quiz-option" data-correct="false">5 次</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-item" data-question="q7">
+                        <div class="quiz-question"><span class="quiz-num">Q7</span>程序运行时发生了死循环，在终端里应该按什么快捷键强制停止？</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">Ctrl + Z</div>
+                            <div class="quiz-option" data-correct="true">Ctrl + C</div>
+                            <div class="quiz-option" data-correct="false">Ctrl + D</div>
+                            <div class="quiz-option" data-correct="false">Ctrl + S</div>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-submit-area" id="quizSubmitArea">
+                        <button class="quiz-submit-btn" onclick="submitQuiz()">提交答案</button>
+                        <div class="quiz-hint">请回答全部 7 道题后再提交</div>
+                    </div>
+
+                    <div class="quiz-result" id="quizResult" style="display:none">
+                        <div class="result-score" id="resultScore"></div>
+                        <div class="result-msg" id="resultMsg"></div>
+                        <button class="retry-btn" onclick="resetQuiz()">🔄 重新作答</button>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 章节导航 -->
+            <div class="chapter-footer animate-in" style="animation-delay:.5s">
+                <div class="complete-btn-area">
+                    <button id="markCompleteBtn">标记本节完成</button>
+                </div>
+                <div class="chapter-nav">
+                    <a href="chapter3.html" class="nav-btn prev-btn">
+                        <span class="nav-arrow">←</span>
+                        <span>上一节：if 判断</span>
+                    </a>
+                    <a href="chapter3-3.html" class="nav-btn next-btn">
+                        <span>下一节：for 循环</span>
+                        <span class="nav-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        /* ── 代码复制 ─────────────────────────────── */
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '已复制 ✓';
+                setTimeout(() => btn.textContent = '复制代码', 2000);
+            });
+        }
+
+        /* ── 进度条 ───────────────────────────────── */
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('progressBar').style.width  = '50%';
+                document.getElementById('progressText').textContent = '50%';
+            }, 500);
+        });
+
+        /* ── 猜数字模拟器 ─────────────────────────── */
+        let secretNum = Math.floor(Math.random() * 20) + 1;
+        let guessLeft = 6;
+        let guessUsed = 0;
+        let gameOver  = false;
+
+        function makeGuess() {
+            if (gameOver) return;
+            const input = document.getElementById('guessInput');
+            const val   = parseInt(input.value);
+            if (isNaN(val) || val < 1 || val > 20) {
+                appendGuessLog('<span class="gl-lose">请输入 1~20 之间的整数！</span>');
+                return;
+            }
+            guessUsed++;
+            guessLeft--;
+
+            // 更新点点
+            const dots = document.querySelectorAll('.guess-dot');
+            dots[guessUsed - 1].classList.add('used');
+
+            document.getElementById('guessAttempts').textContent = `剩余次数：${guessLeft} / 6`;
+
+            if (val === secretNum) {
+                appendGuessLog(`<span class="gl-prompt">你猜：${val}</span>`);
+                appendGuessLog(`<span class="gl-win">🎉 恭喜！猜对了！答案就是 ${secretNum}，共猜了 ${guessUsed} 次（触发 break，循环结束！）</span>`);
+                dots.forEach(d => { if (d.classList.contains('used')) d.classList.add('win'); });
+                document.getElementById('guessBtn').disabled = true;
+                gameOver = true;
+            } else {
+                const hint = val < secretNum ? '太小了，再大一点 ↑' : '太大了，再小一点 ↓';
+                appendGuessLog(`<span class="gl-prompt">你猜：${val}</span> → <span class="gl-hint">${hint}</span>`);
+                if (guessLeft === 0) {
+                    appendGuessLog(`<span class="gl-lose">😢 机会用完了！答案是 ${secretNum}</span>`);
+                    document.getElementById('guessBtn').disabled = true;
+                    gameOver = true;
+                }
+            }
+            input.value = '';
+            input.focus();
+        }
+
+        function appendGuessLog(html) {
+            const log = document.getElementById('guessLog');
+            log.innerHTML += `<div>${html}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function resetGuess() {
+            secretNum = Math.floor(Math.random() * 20) + 1;
+            guessLeft = 6; guessUsed = 0; gameOver = false;
+            document.getElementById('guessLog').innerHTML = '<div><span class="gl-system">系统：已选好一个新数，开始猜吧！</span></div>';
+            document.getElementById('guessAttempts').textContent = '剩余次数：6 / 6';
+            document.getElementById('guessBtn').disabled = false;
+            document.getElementById('guessInput').value = '';
+            document.querySelectorAll('.guess-dot').forEach(d => d.className = 'guess-dot');
+        }
+
+        document.getElementById('guessInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') makeGuess();
+        });
+
+        /* ── continue 步进模拟器 ──────────────────── */
+        let stepI = 0;
+        let stepOutput = [];
+        let stepDone = false;
+
+        function stepNext() {
+            if (stepDone) { stepReset(); return; }
+            stepI++;
+            const log    = document.getElementById('stepLog');
+            const outEl  = document.getElementById('stepOutput');
+
+            if (stepI > 10) {
+                log.innerHTML += `<div style="color:#475569">— 循环结束（i=11，条件 False）—</div>`;
+                stepDone = true;
+                return;
+            }
+
+            if (stepI % 2 === 0) {
+                log.innerHTML += `<div><span class="sd-loop">i = ${stepI}</span> → <span class="sd-skip">偶数，continue ⏭️</span></div>`;
+            } else {
+                log.innerHTML += `<div><span class="sd-loop">i = ${stepI}</span> → <span class="sd-out">print(${stepI}) ✓</span></div>`;
+                stepOutput.push(stepI);
+                outEl.innerHTML = stepOutput.map(n => `<span class="sd-out">${n}</span>`).join('  ');
+            }
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function stepReset() {
+            stepI = 0; stepOutput = []; stepDone = false;
+            document.getElementById('stepLog').innerHTML    = '';
+            document.getElementById('stepOutput').innerHTML = '';
+        }
+
+        /* ── 九九乘法表生成器 ─────────────────────── */
+        function generateMultiply() {
+            const max = parseInt(document.getElementById('msRange').value);
+            const out = document.getElementById('msOutput');
+            let html  = '';
+            for (let i = 1; i <= max; i++) {
+                html += '<div class="ms-out-row">';
+                for (let j = 1; j <= i; j++) {
+                    html += `<span class="ms-cell">${j}×${i}=${i*j}</span>`;
+                }
+                html += '</div>';
+            }
+            out.innerHTML = html;
+        }
+        generateMultiply();
+
+        /* ── 测验逻辑 ─────────────────────────────── */
+        let selectedAnswers = {};
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const item = this.closest('.quiz-item');
+                if (item.classList.contains('answered')) return;
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAnswers[item.dataset.question] = this.dataset.correct === 'true';
+                const total = document.querySelectorAll('.quiz-item').length;
+                const done  = Object.keys(selectedAnswers).length;
+                const hint  = document.querySelector('.quiz-hint');
+                hint.textContent = done >= total ? '全部回答完毕，可以提交了！' : `已回答 ${done} / ${total} 题`;
+                hint.style.color = done >= total ? '#22c55e' : '#94a3b8';
+            });
+        });
+
+        function submitQuiz() {
+            const items = document.querySelectorAll('.quiz-item');
+            if (Object.keys(selectedAnswers).length < items.length) {
+                alert('请先回答所有题目再提交！'); return;
+            }
+            let correct = 0;
+            items.forEach(item => {
+                item.classList.add('answered');
+                const selected  = item.querySelector('.quiz-option.selected');
+                const feedback  = item.querySelector('.quiz-feedback');
+                const isCorrect = selectedAnswers[item.dataset.question];
+                if (isCorrect) {
+                    selected.classList.add('correct');
+                    feedback.textContent = '✓ 回答正确！';
+                    feedback.className   = 'quiz-feedback feedback-correct';
+                    correct++;
+                } else {
+                    selected.classList.add('wrong');
+                    feedback.textContent = '✗ 回答错误，正确答案已标绿';
+                    feedback.className   = 'quiz-feedback feedback-wrong';
+                    item.querySelectorAll('.quiz-option').forEach(o => {
+                        if (o.dataset.correct === 'true') o.classList.add('correct');
+                    });
+                }
+            });
+            document.getElementById('quizSubmitArea').style.display = 'none';
+            const result  = document.getElementById('quizResult');
+            const scoreEl = document.getElementById('resultScore');
+            result.style.display = 'block';
+            scoreEl.textContent  = `${correct} / ${items.length}`;
+            scoreEl.style.color  = correct === items.length ? '#22c55e' : correct >= 5 ? '#f59e0b' : '#ef4444';
+            document.getElementById('resultMsg').textContent =
+                correct === items.length ? '🎉 全部答对！你已完全掌握 while 循环，太厉害了！' :
+                correct >= 5 ? '👍 答得不错！有个别地方可以再复习一下。' :
+                '💪 没关系，多看几遍内容，理解 while 的执行逻辑，再来挑战！';
+        }
+
+        function resetQuiz() {
+            selectedAnswers = {};
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.classList.remove('answered');
+                item.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected', 'correct', 'wrong'));
+                const fb = item.querySelector('.quiz-feedback');
+                fb.textContent = ''; fb.className = 'quiz-feedback';
+            });
+            document.getElementById('quizResult').style.display    = 'none';
+            document.getElementById('quizSubmitArea').style.display = 'flex';
+            const hint = document.querySelector('.quiz-hint');
+            hint.textContent = '请回答全部 7 道题后再提交';
+            hint.style.color = '#94a3b8';
+        }
+    </script>
+</body>
+</html>
