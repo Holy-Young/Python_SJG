@@ -745,6 +745,37 @@ a { text-decoration: none; color: inherit; }
     font-weight: 600;
 }
 
+/* 路线图内课时链接列表 */
+.roadmap-lessons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+}
+.roadmap-lesson {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #6366f1;
+    background: #eef2ff;
+    padding: 3px 12px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.roadmap-lesson:hover {
+    background: #6366f1;
+    color: #fff;
+}
+.roadmap-lesson::before {
+    content: '📖';
+    font-size: 11px;
+}
+
 /* 难度徽章 */
 .badge {
     display: inline-block;

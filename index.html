@@ -165,83 +165,10 @@ total = <span class="fc-number">0</span>
             <div class="section-header animate-in" style="animation-delay: 0.3s" id="roadmap">
                 <div class="section-tag">ROADMAP</div>
                 <h2 class="section-title">课程路线图</h2>
-                <p class="section-desc">共 4 个章节，循序渐进带你入门</p>
+                <p class="section-desc" id="roadmapDesc"></p>
             </div>
 
-            <div class="roadmap animate-in" style="animation-delay: 0.35s">
-
-                <div class="roadmap-item">
-                    <div class="roadmap-left">
-                        <div class="roadmap-dot dot-blue">1</div>
-                        <div class="roadmap-connector"></div>
-                    </div>
-                    <div class="roadmap-content">
-                        <div class="roadmap-meta">
-                            <span class="badge badge-beginner">入门</span>
-                            <span class="roadmap-count" id="r-count-0"></span>
-                        </div>
-                        <h3>认识 Python</h3>
-                        <p>了解 Python 是什么，安装环境，写出第一行代码</p>
-                        <div class="roadmap-tags">
-                            <span>print()</span><span>解释器</span><span>运行程序</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="roadmap-item">
-                    <div class="roadmap-left">
-                        <div class="roadmap-dot dot-indigo">2</div>
-                        <div class="roadmap-connector"></div>
-                    </div>
-                    <div class="roadmap-content">
-                        <div class="roadmap-meta">
-                            <span class="badge badge-beginner">入门</span>
-                            <span class="roadmap-count" id="r-count-1"></span>
-                        </div>
-                        <h3>数据与变量</h3>
-                        <p>学习字面量、变量、数据类型</p>
-                        <div class="roadmap-tags">
-                            <span>变量</span><span>字符串</span><span>列表</span><span>字典</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="roadmap-item">
-                    <div class="roadmap-left">
-                        <div class="roadmap-dot dot-violet">3</div>
-                        <div class="roadmap-connector"></div>
-                    </div>
-                    <div class="roadmap-content">
-                        <div class="roadmap-meta">
-                            <span class="badge badge-intermediate">进阶</span>
-                            <span class="roadmap-count" id="r-count-2"></span>
-                        </div>
-                        <h3>条件与循环</h3>
-                        <p>让程序学会判断和重复执行，写出有逻辑的代码</p>
-                        <div class="roadmap-tags">
-                            <span>if/else</span><span>for</span><span>while</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="roadmap-item">
-                    <div class="roadmap-left">
-                        <div class="roadmap-dot dot-purple">4</div>
-                    </div>
-                    <div class="roadmap-content">
-                        <div class="roadmap-meta">
-                            <span class="badge badge-intermediate">进阶</span>
-                            <span class="roadmap-count" id="r-count-3"></span>
-                        </div>
-                        <h3>函数</h3>
-                        <p>把代码封装成函数，写出可以复用的程序</p>
-                        <div class="roadmap-tags">
-                            <span>def</span><span>参数</span><span>return</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <div class="roadmap animate-in" style="animation-delay: 0.35s" id="roadmapContainer"></div>
 
             <!-- 底部 CTA -->
             <div class="cta-banner animate-in" style="animation-delay:0.4s">
@@ -257,13 +184,72 @@ total = <span class="fc-number">0</span>
 
     <script src="js/main.js"></script>
     <script>
-        // 路线图节数自动填充
-        document.addEventListener("DOMContentLoaded", () => {
-            COURSE_CONFIG.chapters.forEach((ch, i) => {
-                const el = document.getElementById(`r-count-${i}`);
-                if (el) el.textContent = `共 ${ch.lessons.length} 节`;
+        // ===================================================
+        // 路线图补充元数据（描述、标签、难度等级）
+        // ===================================================
+        const ROADMAP_META = [
+            { badge: 'badge-beginner', badgeText: '入门',      desc: '了解 Python 是什么，安装环境，写出第一行代码',                        tags: ['print()', '解释器', '运行程序'] },
+            { badge: 'badge-beginner', badgeText: '入门',      desc: '学习字面量、变量、数据类型',                                           tags: ['变量', '标识符', '数据类型', '运算符'] },
+            { badge: 'badge-intermediate', badgeText: '进阶',   desc: '让程序学会判断和重复执行，写出有逻辑的代码',                          tags: ['if/else', 'while', 'for'] },
+            { badge: 'badge-intermediate', badgeText: '进阶',   desc: '把代码封装成函数，写出可以复用的程序',                                tags: ['def', '参数', 'return'] },
+        ];
+
+        const ROADMAP_COLORS = ['blue', 'indigo', 'violet', 'purple'];
+
+        // ===================================================
+        // 渲染课程路线图
+        // ===================================================
+        function renderRoadmap() {
+            const container = document.getElementById('roadmapContainer');
+            const descEl = document.getElementById('roadmapDesc');
+            if (!container) return;
+
+            const totalChapters = COURSE_CONFIG.chapters.length;
+            if (descEl) descEl.textContent = `共 ${totalChapters} 个章节，循序渐进带你入门`;
+
+            container.innerHTML = '';
+
+            COURSE_CONFIG.chapters.forEach((chapter, idx) => {
+                const meta = ROADMAP_META[idx] || {};
+                const color = ROADMAP_COLORS[idx % ROADMAP_COLORS.length];
+                const isLast = idx === totalChapters - 1;
+
+                // 构建标签 HTML
+                const tagsHtml = (meta.tags || [])
+                    .map(t => `<span>${t}</span>`)
+                    .join('');
+
+                // 组装课时列表
+                const lessonsHtml = chapter.lessons
+                    .map(lesson => `<a href="pages/${lesson.file}" class="roadmap-lesson">${lesson.title}</a>`)
+                    .join('');
+
+                const item = document.createElement('div');
+                item.className = 'roadmap-item';
+                item.innerHTML = `
+                    <div class="roadmap-left">
+                        <div class="roadmap-dot dot-${color}">${idx + 1}</div>
+                        ${isLast ? '' : '<div class="roadmap-connector"></div>'}
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-meta">
+                            <span class="badge ${meta.badge || 'badge-beginner'}">${meta.badgeText || '入门'}</span>
+                            <span class="roadmap-count">共 ${chapter.lessons.length} 节</span>
+                        </div>
+                        <h3>${chapter.title}</h3>
+                        <p>${meta.desc || ''}</p>
+                        <div class="roadmap-tags">${tagsHtml}</div>
+                        <div class="roadmap-lessons">${lessonsHtml}</div>
+                    </div>
+                `;
+                container.appendChild(item);
             });
-        });
+        }
+
+        // ===================================================
+        // 页面加载后执行
+        // ===================================================
+        document.addEventListener("DOMContentLoaded", renderRoadmap);
     </script>
 </body>
 
